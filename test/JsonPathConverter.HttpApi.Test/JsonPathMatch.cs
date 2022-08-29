@@ -46,8 +46,8 @@ namespace JsonPathConverter.HttpApi.Test
                     new UserLog{ ActionName = "Login out System", Message ="pluma login out of the web",  Date = DateTime.Parse("2022-08-29 10:01:00")}
                 } },
                 new UserAction { UserId = 2, UserName ="redz",UserLogs = new List<UserLog>{
-                    new UserLog{ ActionName = "Login System", Message ="redz login in to the system on the web", Date = DateTime.Parse("2022-08-29 10:00:00") },
-                    new UserLog{ ActionName = "Login out System", Message ="redz login out of the web",  Date = DateTime.Parse("2022-08-29 10:01:00")}
+                    //new UserLog{ ActionName = "Login System", Message ="redz login in to the system on the web", Date = DateTime.Parse("2022-08-29 10:00:00") },
+                    //new UserLog{ ActionName = "Login out System", Message ="redz login out of the web",  Date = DateTime.Parse("2022-08-29 10:01:00")}
                 } },
                 new UserAction{ UserId = 3,UserName ="fizz",UserLogs = new List<UserLog>{
                     new UserLog{ ActionName = "Login System", Message ="fizz login in to the system on the web", Date = DateTime.Parse("2022-08-29 10:00:00") },
@@ -60,43 +60,9 @@ namespace JsonPathConverter.HttpApi.Test
 
             var jsonSourceElements = JsonColumnMapper.JsonSourceElements(userActionsJsonStr, destinationJsonColumns, jsonPathMapperRelations);
 
-            var destinationJsonResult = GenerateDestinationJsonStr(jsonSourceElements);
+            var destinationJsonStr = JsonSerializer.Serialize(jsonSourceElements);
 
             Assert.True(1 == 1);
-        }
-
-        private string GenerateDestinationJsonStr(Dictionary<string, JsonElementDetail> jsonSourceElements)
-        {
-            // 构建对象
-            Dictionary<string, object?> objectProperties = new Dictionary<string, object?>();
-
-            var propertyNames = jsonSourceElements.Select(s => s.Key);
-
-            foreach (var propertyName in propertyNames)
-            {
-                objectProperties[propertyName] = default;
-            }
-
-            foreach (var item in objectProperties)
-            {
-
-            }
-
-            // 查找元素之间的对象关系
-            foreach (var jsonSourceElement in jsonSourceElements)
-            {
-                foreach (var jsonElementRelation in jsonSourceElement.Value.JsonElementRelations)
-                {
-                    JsonElement jsonElement = jsonElementRelation.Self;
-
-                    foreach (var ancestor in jsonElementRelation.Ancestors)
-                    {
-
-                    }
-                }
-            }
-
-            return string.Empty;
         }
     }
 }
