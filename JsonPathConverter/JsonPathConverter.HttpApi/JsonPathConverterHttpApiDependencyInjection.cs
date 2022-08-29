@@ -21,9 +21,9 @@ public static class JsonPathConverterHttpApiDependencyInjection
         // add json data provider
         serviceCollection.AddScoped<IJsonDataProvider, HttpApiJsonDataProvider>();
 
-        serviceCollection.Configure<JsonPathColumnMapperOption>(option =>
+        serviceCollection.Configure<JsonPathColumnTypeMapperOption>(option =>
         {
-            //option.JsonColumnMappers.Add();
+            //option.JsonColumnTypeMappers.Add();
         });
 
         return serviceCollection;

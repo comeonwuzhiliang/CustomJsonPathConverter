@@ -1,4 +1,5 @@
-﻿using JsonPathConverter.Interface;
+﻿using JsonPathConverter.DefaultColumnMapper;
+using JsonPathConverter.Interface;
 using Microsoft.Extensions.Logging;
 using System.Reflection.Emit;
 
@@ -30,7 +31,9 @@ namespace JsonPathConverter.HttpApi
 
                 var apiJsonResult = await result.Content.ReadAsStringAsync(cancellationToken);
 
-                //TODO:Column Mapper
+                var jsonSourceElements = JsonColumnMapper.JsonSourceElements(apiJsonResult, jsonPathRoot.DestinationJsonColumns, jsonPathRoot.JsonPathMapperRelations);
+
+                //TODO:Column Type Mapper
 
                 return apiJsonResult;
             }
