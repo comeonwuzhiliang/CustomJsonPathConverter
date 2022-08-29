@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JsonPathConverter.HttpApi\JsonPathConverter.HttpApi.csproj" />
+    <ProjectReference Include="..\..\src\JsonPathConverter.HttpApi\JsonPathConverter.HttpApi.csproj" />
   </ItemGroup>
 
 </Project>
