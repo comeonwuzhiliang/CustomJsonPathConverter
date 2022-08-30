@@ -1,6 +1,7 @@
 ﻿using JsonPathConverter.DefaultColumnMapper;
 using JsonPathConverter.Interface;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Reflection.Emit;
 
 namespace JsonPathConverter.HttpApi
@@ -22,7 +23,7 @@ namespace JsonPathConverter.HttpApi
             _jsonColumnMapper = jsonColumnMapper;
         }
 
-        public async Task<string> GetJsonData(JsonPathRoot jsonPathRoot, CancellationToken cancellationToken)
+        public async Task<List<Dictionary<string, object?>>> GetJsonData(JsonPathRoot jsonPathRoot, CancellationToken cancellationToken)
         {
             if (jsonPathRoot is JsonPathHttpApiRoot)
             {
@@ -38,7 +39,7 @@ namespace JsonPathConverter.HttpApi
 
                 //TODO:Column Type Mapper
 
-                return apiJsonResult;
+                return jsonSourceElements;
             }
             else
             {

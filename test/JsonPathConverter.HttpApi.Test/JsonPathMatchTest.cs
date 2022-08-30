@@ -8,7 +8,7 @@ using JsonPathConverter.DefaultColumnMapper;
 
 namespace JsonPathConverter.HttpApi.Test
 {
-    public class JsonPathMatch
+    public class JsonPathMatchTest
     {
         [Fact]
         public void JsonPathMatchColumn()

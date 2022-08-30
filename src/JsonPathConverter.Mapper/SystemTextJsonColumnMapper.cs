@@ -1,4 +1,5 @@
 ﻿using JsonPathConverter.Interface;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace JsonPathConverter.DefaultColumnMapper
 
             Dictionary<string, JsonElementDetail> sourceColumnJsonElements = new Dictionary<string, JsonElementDetail>();
 
+            string rootPath = "$";
+
+            if (jsonPathMapperRelations?.Any() == true)
+            {
+                rootPath = jsonPathMapperRelations.ElementAt(0).RootPath ?? "";
+            }
+
             // iterate destination json column
             foreach (var destinationJsonColumn in destinationJsonColumns ?? new List<DestinationJsonColumn>())
             {
@@ -36,7 +44,7 @@ namespace JsonPathConverter.DefaultColumnMapper
                 else
                 {
                     // find same as destination column name
-                    sourceJsonPath = $"$.{destinationJsonColumn!.Code}";
+                    sourceJsonPath = $"{rootPath}.{destinationJsonColumn!.Code}";
                 }
 
                 JsonElementDetail jsonElementDetail = new JsonElementDetail();
@@ -53,6 +61,13 @@ namespace JsonPathConverter.DefaultColumnMapper
                     {
                         sourceJsonColumnElementRelations.Add(new JsonElementRelation { Self = rootJsonElement });
                         return sourceJsonColumnElementRelations;
+                    }
+
+                    bool isRecordAncestors = false;
+
+                    if (!rootPath.Contains($".{path}."))
+                    {
+                        isRecordAncestors = true;
                     }
 
                     foreach (var je in jes)
@@ -83,7 +98,7 @@ namespace JsonPathConverter.DefaultColumnMapper
                                         IsArray = isArray,
                                         HostObjectJsonElement = hostObjectJsonElement,
                                         Self = jsonElement.GetProperty(path),
-                                        Ancestors =
+                                        Ancestors = isRecordAncestors ? new List<JsonElement>() :
                                          new List<JsonElement>(je.Ancestors) { je.Self, jsonElement }
                                     });
                                 }
@@ -95,7 +110,7 @@ namespace JsonPathConverter.DefaultColumnMapper
                                     ColumnName = destinationJsonColumn.Code!,
                                     Self = je.Self.GetProperty(path),
                                     HostObjectJsonElement = je.Self,
-                                    Ancestors =
+                                    Ancestors = isRecordAncestors ? new List<JsonElement>() :
                                          new List<JsonElement>(je.Ancestors) { je.Self }
                                 });
                             }

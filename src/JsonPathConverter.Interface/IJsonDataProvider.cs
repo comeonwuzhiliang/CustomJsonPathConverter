@@ -2,6 +2,6 @@
 {
     public interface IJsonDataProvider
     {
-        Task<string> GetJsonData(JsonPathRoot jsonPathRoot, CancellationToken cancellationToken = default);
+        Task<List<Dictionary<string, object?>>> GetJsonData(JsonPathRoot jsonPathRoot, CancellationToken cancellationToken = default);
     }
 }
