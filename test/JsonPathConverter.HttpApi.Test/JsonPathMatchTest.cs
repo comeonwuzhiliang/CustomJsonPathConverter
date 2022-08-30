@@ -77,7 +77,10 @@ namespace JsonPathConverter.HttpApi.Test
             // fake json source
             string userActionsJsonStr = JsonSerializer.Serialize(userActions);
 
-            var jsonSourceElements = new SystemTextJsonColumnMapper().MapToCollection(userActionsJsonStr, destinationJsonColumns, jsonPathMapperRelations);
+            JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
+            jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
+
+            var jsonSourceElements = new SystemTextJsonColumnMapper().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
             var destinationJsonStr = JsonSerializer.Serialize(jsonSourceElements);
 
@@ -126,7 +129,10 @@ namespace JsonPathConverter.HttpApi.Test
             // fake json source
             string userActionsJsonStr = JsonSerializer.Serialize(userAction);
 
-            var jsonSourceElements = new SystemTextJsonColumnMapper().MapToCollection(userActionsJsonStr, destinationJsonColumns, jsonPathMapperRelations);
+            JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
+            jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
+
+            var jsonSourceElements = new SystemTextJsonColumnMapper().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
             var destinationJsonStr = JsonSerializer.Serialize(jsonSourceElements);
 
@@ -183,7 +189,10 @@ namespace JsonPathConverter.HttpApi.Test
             // fake json source
             string userActionsJsonStr = JsonSerializer.Serialize(userAction);
 
-            var jsonSourceElements = new SystemTextJsonColumnMapper().MapToCollection(userActionsJsonStr, destinationJsonColumns, jsonPathMapperRelations);
+            JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
+            jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
+
+            var jsonSourceElements = new SystemTextJsonColumnMapper().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
             var destinationJsonStr = JsonSerializer.Serialize(jsonSourceElements);
 

@@ -1,31 +1,26 @@
 ﻿using JsonPathConverter.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JsonPathConverter.DefaultColumnMapper
 {
     public class NewtonsoftJsonColumnMapper : IJsonColumnMapper
     {
-        public List<Dictionary<string, object?>> MapToCollection(string jsonSourceStr, IEnumerable<DestinationJsonColumn>? destinationJsonColumns, IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations)
+        public List<Dictionary<string, object?>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            string destinationJson = MapToStr(jsonSourceStr, destinationJsonColumns, jsonPathMapperRelations);
+            string destinationJson = MapToStr(jsonSourceStr, jsonPathRoot);
             return JsonConvert.DeserializeObject<List<Dictionary<string, object?>>>(destinationJson);
         }
 
-        public Dictionary<string, object?> MapToDic(string jsonSourceStr, IEnumerable<DestinationJsonColumn>? destinationJsonColumns, IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations)
+        public Dictionary<string, object?> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            string destinationJson = MapToStr(jsonSourceStr, destinationJsonColumns, jsonPathMapperRelations);
+            string destinationJson = MapToStr(jsonSourceStr, jsonPathRoot);
             return JsonConvert.DeserializeObject<Dictionary<string, object?>>(destinationJson);
         }
 
-        private string MapToStr(string jsonSourceStr, IEnumerable<DestinationJsonColumn>? destinationJsonColumns, IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations)
+        private string MapToStr(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            var dic = jsonPathMapperRelations?.ToDictionary(s => s.SourceJsonPath ?? string.Empty) ?? new Dictionary<string, JsonPathMapperRelation>();
+            var dic = jsonPathRoot.JsonPathMapperRelations?.ToDictionary(s => s.SourceJsonPath ?? string.Empty) ?? new Dictionary<string, JsonPathMapperRelation>();
             var jObj = JObject.Parse(jsonSourceStr);
             if (jObj == null)
             {

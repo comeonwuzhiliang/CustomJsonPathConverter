@@ -12,7 +12,7 @@ namespace JsonPathConverter.DefaultColumnMapper
 {
     public class SystemTextJsonColumnMapper : IJsonColumnMapper
     {
-        public List<Dictionary<string, object?>> MapToCollection(string jsonSourceStr, IEnumerable<DestinationJsonColumn>? destinationJsonColumns, IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations)
+        public List<Dictionary<string, object?>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
             JsonDocument? jsonSourceDocument = JsonSerializer.Deserialize<JsonDocument>(jsonSourceStr);
 
@@ -22,18 +22,13 @@ namespace JsonPathConverter.DefaultColumnMapper
 
             Dictionary<string, JsonElementDetail> sourceColumnJsonElements = new Dictionary<string, JsonElementDetail>();
 
-            string rootPath = "$";
-
-            if (jsonPathMapperRelations?.Any() == true)
-            {
-                rootPath = jsonPathMapperRelations.ElementAt(0).RootPath ?? "";
-            }
+            string rootPath = jsonPathRoot.RootPath ?? "$";
 
             // iterate destination json column
-            foreach (var destinationJsonColumn in destinationJsonColumns ?? new List<DestinationJsonColumn>())
+            foreach (var destinationJsonColumn in jsonPathRoot.DestinationJsonColumns ?? new List<DestinationJsonColumn>())
             {
                 // TODO: 使用JsonElement的ObjectEnumerator内置对象的Current的Name进行判断（来实现忽略大小写的功能）
-                var destinationMapperColumn = jsonPathMapperRelations?.FirstOrDefault(s => s.DestinationJsonColumnCode == destinationJsonColumn.Code);
+                var destinationMapperColumn = jsonPathRoot.JsonPathMapperRelations?.FirstOrDefault(s => s.DestinationJsonColumnCode == destinationJsonColumn.Code);
 
                 string sourceJsonPath = string.Empty;
 
@@ -65,7 +60,7 @@ namespace JsonPathConverter.DefaultColumnMapper
 
                     bool isRecordAncestors = false;
 
-                    if (!rootPath.Contains($".{path}."))
+                    if (!rootPath.Contains($".{path}.") && !rootPath.EndsWith($".{path}"))
                     {
                         isRecordAncestors = true;
                     }
@@ -81,38 +76,36 @@ namespace JsonPathConverter.DefaultColumnMapper
                                 ArrayEnumerator jsonElements = je.Self.EnumerateArray();
                                 foreach (var jsonElement in jsonElements)
                                 {
-                                    var hostObjectJsonElement = jsonElement;
+                                    var rootObjectJsonElement = jsonElement;
                                     if (je.Self.ValueKind == JsonValueKind.Array)
                                     {
                                         if (je.Ancestors.Any())
                                         {
-                                            hostObjectJsonElement = je.Ancestors.Last();
                                             isArray = true;
                                         }
                                     }
 
-                                    sourceJsonColumnElementRelations.Add(new JsonElementRelation
+                                    var jsonElementRelation = new JsonElementRelation
                                     {
                                         ColumnName = destinationJsonColumn.Code!,
                                         ArrayId = guid,
                                         IsArray = isArray,
-                                        HostObjectJsonElement = hostObjectJsonElement,
                                         Self = jsonElement.GetProperty(path),
-                                        Ancestors = isRecordAncestors ? new List<JsonElement>() :
-                                         new List<JsonElement>(je.Ancestors) { je.Self, jsonElement }
-                                    });
+                                        Ancestors = isRecordAncestors ? new List<JsonElement>(je.Ancestors) { je.Self, jsonElement } : new List<JsonElement>()
+                                    };
+                                    sourceJsonColumnElementRelations.Add(jsonElementRelation);
                                 }
                             }
                             else
                             {
-                                sourceJsonColumnElementRelations.Add(new JsonElementRelation
+                                var jsonElementRelation = new JsonElementRelation
                                 {
                                     ColumnName = destinationJsonColumn.Code!,
                                     Self = je.Self.GetProperty(path),
-                                    HostObjectJsonElement = je.Self,
-                                    Ancestors = isRecordAncestors ? new List<JsonElement>() :
-                                         new List<JsonElement>(je.Ancestors) { je.Self }
-                                });
+                                    Ancestors = isRecordAncestors ? new List<JsonElement>(je.Ancestors) { je.Self } :
+                                    new List<JsonElement>()
+                                };
+                                sourceJsonColumnElementRelations.Add(jsonElementRelation);
                             }
                         }
                         catch
@@ -140,12 +133,12 @@ namespace JsonPathConverter.DefaultColumnMapper
             // TODO: 字典类型使用JsonElement类型
             List<Dictionary<string, object?>> destinationJsonCollection = new List<Dictionary<string, object?>>();
 
-            var groupsByHost = jsonSourceElements.SelectMany(s => s.Value.JsonElementRelations).GroupBy(s => s.HostObjectJsonElement);
+            var groupsByRoot = jsonSourceElements.SelectMany(s => s.Value.JsonElementRelations).GroupBy(s => s.RootObjectJsonElement);
 
-            foreach (var groupHosts in groupsByHost)
+            foreach (var groupRoots in groupsByRoot)
             {
                 Dictionary<string, object?> destinationJsonDic = new Dictionary<string, object?>();
-                foreach (var group in groupHosts.GroupBy(s => s.ColumnName))
+                foreach (var group in groupRoots.GroupBy(s => s.ColumnName))
                 {
                     var firstItem = group.First();
                     if (firstItem.IsArray == false)
@@ -167,9 +160,9 @@ namespace JsonPathConverter.DefaultColumnMapper
             return destinationJsonCollection;
         }
 
-        public Dictionary<string, object?> MapToDic(string jsonSourceStr, IEnumerable<DestinationJsonColumn>? destinationJsonColumns, IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations)
+        public Dictionary<string, object?> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            var list = MapToCollection(jsonSourceStr, destinationJsonColumns, jsonPathMapperRelations);
+            var list = MapToCollection(jsonSourceStr, jsonPathRoot);
             if (list.Any())
             {
                 return list[0];

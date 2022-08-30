@@ -35,7 +35,7 @@ namespace JsonPathConverter.HttpApi
 
                 var apiJsonResult = await result.Content.ReadAsStringAsync(cancellationToken);
 
-                var jsonSourceElements = _jsonColumnMapper.MapToCollection(apiJsonResult, jsonPathRoot.DestinationJsonColumns, jsonPathRoot.JsonPathMapperRelations);
+                var jsonSourceElements = _jsonColumnMapper.MapToCollection(apiJsonResult, jsonPathRoot);
 
                 //TODO:Column Type Mapper
 

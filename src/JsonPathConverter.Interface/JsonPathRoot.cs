@@ -1,6 +1,6 @@
 ﻿namespace JsonPathConverter.Interface
 {
-    public abstract class JsonPathRoot
+    public class JsonPathRoot
     {
         public string? RootPath { get; }
 
