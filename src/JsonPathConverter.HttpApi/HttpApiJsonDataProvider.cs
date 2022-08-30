@@ -9,14 +9,17 @@ namespace JsonPathConverter.HttpApi
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger _logger;
+        private readonly IJsonColumnMapper _jsonColumnMapper;
 
         public HttpApiJsonDataProvider(
             IHttpClientFactory httpClientFactory,
-            ILogger<HttpApiJsonDataProvider> logger
+            ILogger<HttpApiJsonDataProvider> logger,
+            IJsonColumnMapper jsonColumnMapper
             )
         {
             _httpClient = httpClientFactory.CreateClient("HttpApiJsonDataProvider_RequestJsonDataProviderUri");
             _logger = logger;
+            _jsonColumnMapper = jsonColumnMapper;
         }
 
         public async Task<string> GetJsonData(JsonPathRoot jsonPathRoot, CancellationToken cancellationToken)
@@ -31,7 +34,7 @@ namespace JsonPathConverter.HttpApi
 
                 var apiJsonResult = await result.Content.ReadAsStringAsync(cancellationToken);
 
-                var jsonSourceElements = JsonColumnMapper.JsonSourceElements(apiJsonResult, jsonPathRoot.DestinationJsonColumns, jsonPathRoot.JsonPathMapperRelations);
+                var jsonSourceElements = _jsonColumnMapper.MapToCollection(apiJsonResult, jsonPathRoot.DestinationJsonColumns, jsonPathRoot.JsonPathMapperRelations);
 
                 //TODO:Column Type Mapper
 

@@ -1,16 +1,17 @@
 ﻿using JsonPathConverter.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using static System.Text.Json.JsonElement;
 
 namespace JsonPathConverter.DefaultColumnMapper
 {
-    public class JsonColumnMapper
+    public class SystemTextJsonColumnMapper : IJsonColumnMapper
     {
-        public static List<Dictionary<string, object?>> JsonSourceElements(
-            string jsonSourceStr,
-            IEnumerable<DestinationJsonColumn>? destinationJsonColumns,
-            IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations
-            )
+        public List<Dictionary<string, object?>> MapToCollection(string jsonSourceStr, IEnumerable<DestinationJsonColumn>? destinationJsonColumns, IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations)
         {
             JsonDocument? jsonSourceDocument = JsonSerializer.Deserialize<JsonDocument>(jsonSourceStr);
 
@@ -117,7 +118,7 @@ namespace JsonPathConverter.DefaultColumnMapper
             return GenerateDestinationJsonDic(sourceColumnJsonElements);
         }
 
-        private static List<Dictionary<string, object?>> GenerateDestinationJsonDic(Dictionary<string, JsonElementDetail> jsonSourceElements)
+        private List<Dictionary<string, object?>> GenerateDestinationJsonDic(Dictionary<string, JsonElementDetail> jsonSourceElements)
         {
             var propertyNames = jsonSourceElements.Select(s => s.Key);
 
@@ -151,5 +152,17 @@ namespace JsonPathConverter.DefaultColumnMapper
             return destinationJsonCollection;
         }
 
+        public Dictionary<string, object?> MapToDic(string jsonSourceStr, IEnumerable<DestinationJsonColumn>? destinationJsonColumns, IEnumerable<JsonPathMapperRelation>? jsonPathMapperRelations)
+        {
+            var list = MapToCollection(jsonSourceStr, destinationJsonColumns, jsonPathMapperRelations);
+            if (list.Any())
+            {
+                return list[0];
+            }
+            else
+            {
+                return new Dictionary<string, object?>();
+            }
+        }
     }
 }

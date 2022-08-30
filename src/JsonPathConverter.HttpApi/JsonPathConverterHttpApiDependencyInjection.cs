@@ -1,4 +1,5 @@
-﻿using JsonPathConverter.Interface;
+﻿using JsonPathConverter.DefaultColumnMapper;
+using JsonPathConverter.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 
@@ -20,6 +21,9 @@ public static class JsonPathConverterHttpApiDependencyInjection
 
         // add json data provider
         serviceCollection.AddScoped<IJsonDataProvider, HttpApiJsonDataProvider>();
+
+        // add json column provider
+        serviceCollection.AddSingleton<IJsonColumnMapper, SystemTextJsonColumnMapper>();
 
         serviceCollection.Configure<JsonPathColumnTypeMapperOption>(option =>
         {
