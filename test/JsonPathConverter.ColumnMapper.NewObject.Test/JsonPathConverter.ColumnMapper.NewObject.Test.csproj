@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,8 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\JsonPathConverter.ColumnMapper.NewObject\JsonPathConverter.ColumnMapper.NewObject.csproj" />
-    <ProjectReference Include="..\..\src\JsonPathConverter.ColumnMapper.ReplaceKey\JsonPathConverter.ColumnMapper.ReplaceKey.csproj" />
-    <ProjectReference Include="..\..\src\JsonPathConverter.JsonSoure.HttpApi\JsonPathConverter.JsonSoure.HttpApi.csproj" />
     <ProjectReference Include="..\JsonPathConverter.Test.FakeObject\JsonPathConverter.Test.FakeObject.csproj" />
   </ItemGroup>
 

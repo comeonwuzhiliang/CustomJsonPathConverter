@@ -8,6 +8,8 @@ namespace JsonPathConverter.Abstractions
 {
     public interface IJsonColumnMapper
     {
+        JsonMapResult<TData> Map<TData>(string jsonSourceStr, JsonPathRoot jsonPathRoot);
+
         JsonMapResult<IEnumerable<IDictionary<string, object?>>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot);
 
         JsonMapResult<IDictionary<string, object?>> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot);

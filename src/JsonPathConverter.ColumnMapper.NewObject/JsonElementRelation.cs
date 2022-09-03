@@ -2,12 +2,12 @@
 
 namespace JsonPathConverter.ColumnMapper.NewObject
 {
-    public class JsonElementDetail
+    internal class JsonElementDetail
     {
         public List<JsonElementRelation> JsonElementRelations { get; internal set; } = new List<JsonElementRelation> { };
     }
 
-    public class JsonElementRelation
+    internal class JsonElementRelation
     {
         public string ColumnName { get; set; } = string.Empty;
 

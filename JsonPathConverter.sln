@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.ColumnMap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.ColumnMapper.ReplaceKey.Test", "test\JsonPathConverter.ColumnMapper.ReplaceKey.Test\JsonPathConverter.ColumnMapper.ReplaceKey.Test.csproj", "{0916B7F4-9986-41A6-901B-B2DB64C690E2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.ColumnMapper.NewObject.Test", "test\JsonPathConverter.ColumnMapper.NewObject.Test\JsonPathConverter.ColumnMapper.NewObject.Test.csproj", "{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{0916B7F4-9986-41A6-901B-B2DB64C690E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0916B7F4-9986-41A6-901B-B2DB64C690E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0916B7F4-9986-41A6-901B-B2DB64C690E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{19B471E2-DE4F-4B03-8E7F-59021B19A695} = {D539AF33-3750-4985-AF54-94DC434086BC}
 		{AC3BD566-41E6-42A5-A725-17FAA855612B} = {D539AF33-3750-4985-AF54-94DC434086BC}
 		{0916B7F4-9986-41A6-901B-B2DB64C690E2} = {C05F7435-FB3B-4941-B804-0F00D2D709A4}
+		{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9} = {C05F7435-FB3B-4941-B804-0F00D2D709A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FC65FB8-37D5-4D11-BD7E-C532587C97B7}

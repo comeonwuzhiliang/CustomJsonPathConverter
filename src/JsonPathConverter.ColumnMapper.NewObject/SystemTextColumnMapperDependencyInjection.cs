@@ -1,7 +1,7 @@
 ﻿using JsonPathConverter.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace JsonPathConverter.ColumnMapper.SystemText
+namespace JsonPathConverter.ColumnMapper.NewObject
 {
     public static class ColumnMapperNewObjectDependencyInjection
     {

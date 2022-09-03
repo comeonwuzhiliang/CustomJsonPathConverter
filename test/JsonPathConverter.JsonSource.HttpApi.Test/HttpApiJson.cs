@@ -1,4 +1,5 @@
 ﻿using JsonPathConverter.Abstractions;
+using JsonPathConverter.ColumnMapper.NewObject;
 using JsonPathConverter.ColumnMapper.ReplaceKey;
 using JsonPathConverter.JsonSoure.HttpApi;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,7 +7,7 @@ using Xunit;
 
 namespace JsonPathConverter.JsonSource.HttpApi.Test
 {
-    public class HttpApiJsonTest
+    public class HttpApiJson
     {
         [Fact]
         public void DI()
@@ -21,7 +22,8 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
             using (var scope = serviceProvider.CreateScope())
             {
-
+                Assert.True(scope.ServiceProvider.GetService<IJsonColumnMapper>()!.GetType() == typeof(ColumnMapperReplaceKey));
+                Assert.True(scope.ServiceProvider.GetService<IJsonDataProvider>()!.GetType() == typeof(HttpApiJsonDataProvider));
             }
         }
 
@@ -32,7 +34,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
             serviceCollection.AddHttpApiJsonDataProvider();
 
-            serviceCollection.AddColumnMapperReplaceKey();
+            serviceCollection.AddColumnMapperNewObject();
 
             serviceCollection.AddLogging();
 
@@ -58,6 +60,8 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
                 var result = await jsonDataProvider.GetJsonData(jsonPathRoot);
 
                 var resultJson = System.Text.Json.JsonSerializer.Serialize(result);
+
+                Assert.True(!string.IsNullOrEmpty(resultJson));
             }
         }
     }

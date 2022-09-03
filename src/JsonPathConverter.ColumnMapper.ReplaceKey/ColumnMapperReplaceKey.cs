@@ -6,15 +6,18 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
 {
     public class ColumnMapperReplaceKey : IJsonColumnMapper
     {
+        public JsonMapResult<TData> Map<TData>(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        {
+            return MapToStr<TData>(jsonSourceStr, jsonPathRoot);
+        }
+
         public JsonMapResult<IEnumerable<IDictionary<string, object?>>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-
             return MapToStr<IEnumerable<IDictionary<string, object?>>>(jsonSourceStr, jsonPathRoot);
         }
 
         public JsonMapResult<IDictionary<string, object?>> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-
             return MapToStr<IDictionary<string, object?>>(jsonSourceStr, jsonPathRoot);
         }
 
