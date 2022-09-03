@@ -31,8 +31,5 @@
                 JsonPathMapperRelations.Add(jsonPathMapperRelation);
             }
         }
-
-        protected virtual bool CheckJsonSource() => true;
-
     }
 }

@@ -33,7 +33,8 @@ json数据来源提供者，该提供者是通过访问Api的方式来获取json
 
 ```C#
 serviceCollection.AddHttpApiJsonDataProvider();
-           serviceCollection.AddColumnMapperReplaceKey();
+
+serviceCollection.AddColumnMapperReplaceKey();
 // 或者
 serviceCollection.AddColumnMapperNewObject();
 ```
@@ -43,29 +44,36 @@ serviceCollection.AddColumnMapperNewObject();
 ```
 IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-using (var scope = serviceProvider.CreateScope())
-{
-    IJsonDataProvider jsonDataProvider = scope.ServiceProvider.GetService<IJsonDataProvider>()!;
-    JsonPathRoot jsonPathRoot = new JsonPathHttpApiRoot("$.pages",new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri("https://s.alicdn.com/@xconfig/flasher_classic/manifest") }
-    , new List<DestinationJsonColumn>()
-    {
-        new DestinationJsonColumn{ Code ="PageName",Name ="页面名称" },
-        new DestinationJsonColumn{ Code ="PageUrl",Name ="页面地址" },
-        new DestinationJsonColumn{ Code ="PageNamespace",Name ="页面空间" },
-        new DestinationJsonColumn{ Code ="id",Name ="Id" },
-    });
+ using (var scope = serviceProvider.CreateScope())
+ {
+     IJsonDataProvider jsonDataProvider = scope.ServiceProvider.GetService<IJsonDataProvider>()!;
+     JsonPathRoot jsonPathRoot = new JsonPathRoot("$.pages", new List<DestinationJsonColumn>()
+     {
+         new DestinationJsonColumn{ Code ="PageName",Name ="页面名称" },
+         new DestinationJsonColumn{ Code ="PageUrl",Name ="页面地址" },
+         new DestinationJsonColumn{ Code ="PageNamespace",Name ="页面空间" },
+         new DestinationJsonColumn{ Code ="id",Name ="Id" },
+     });
 
     jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageName", SourceJsonPath = "$.name", RootPath = jsonPathRoot.RootPath });
     jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageUrl", SourceJsonPath = "$.url", RootPath = jsonPathRoot.RootPath });
     jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageNamespace", SourceJsonPath = "$.namespace", RootPath = jsonPathRoot.RootPath });
 
-    var result = await jsonDataProvider.GetJsonData(jsonPathRoot);
+
+    IJsonRequestSource requestSource = new JsonHttpApiRequestSource(new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri("https://s.alicdn.com/@xconfig/flasher_classic/manifest") });
+
+    var apiJsonStr = await jsonDataProvider.GetJsonDataAsync(requestSource, default);
+
+    IJsonColumnMapper jsonColumnMapper = scope.ServiceProvider.GetService<IJsonColumnMapper>()!;
+
+    var resultJson = jsonColumnMapper.MapToCollection(apiJsonStr, jsonPathRoot);
 }
 ```
 
 
 
-### 待完成列表
+### 待做列表
 
 - [ ] 支持列类型的转换
 - [ ] 使用新的json字符串的提供者，内部使用JsonElement的ObjectEnumerator内置对象的Current的Name，来实现忽略大小写的功能
+- [ ] HttpApi层里面的token的来源需要与自定义拦截器解耦，需要提供标准的OAuth2.0协议的获取token方式

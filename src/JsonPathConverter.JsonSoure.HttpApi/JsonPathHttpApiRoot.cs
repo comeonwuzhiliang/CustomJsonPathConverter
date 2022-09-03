@@ -7,21 +7,15 @@ using System.Threading.Tasks;
 
 namespace JsonPathConverter.JsonSoure.HttpApi
 {
-    public class JsonPathHttpApiRoot : JsonPathRoot
+    public class JsonHttpApiRequestSource : IJsonRequestSource
     {
-        public string HttpApiName { get; set; } = string.Empty;
+        public JsonHttpApiRequestSource(HttpRequestMessage httpRequestMessage)
+        {
+            HttpRequestMessage = httpRequestMessage;
+        }
 
         public HttpRequestMessage HttpRequestMessage { get; set; }
 
-        public JsonPathHttpApiRoot(
-            string rootPath,
-            HttpRequestMessage httpRequestMessage,
-            IEnumerable<DestinationJsonColumn>? destinationJsonColumns)
-           : base(rootPath, destinationJsonColumns)
-        {
-            this.HttpRequestMessage = httpRequestMessage;
-        }
 
-        protected override bool CheckJsonSource() => true;
     }
 }

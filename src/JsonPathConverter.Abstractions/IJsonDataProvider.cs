@@ -2,6 +2,8 @@
 {
     public interface IJsonDataProvider
     {
-        Task<IEnumerable<IDictionary<string, object?>>?> GetJsonData(JsonPathRoot jsonPathRoot, CancellationToken cancellationToken = default);
+        Task<string> GetJsonDataAsync(IJsonRequestSource jsonRequestSource, CancellationToken cancellationToken = default);
+
+        Task GetNoJsonDataAsync(IJsonRequestSource jsonRequestSource, CancellationToken cancellationToken = default);
     }
 }

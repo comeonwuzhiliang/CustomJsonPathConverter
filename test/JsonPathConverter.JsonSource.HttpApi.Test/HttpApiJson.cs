@@ -43,9 +43,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
             using (var scope = serviceProvider.CreateScope())
             {
                 IJsonDataProvider jsonDataProvider = scope.ServiceProvider.GetService<IJsonDataProvider>()!;
-                JsonPathRoot jsonPathRoot = new JsonPathHttpApiRoot("$.pages",
-                     new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri("https://s.alicdn.com/@xconfig/flasher_classic/manifest") }
-                    , new List<DestinationJsonColumn>()
+                JsonPathRoot jsonPathRoot = new JsonPathRoot("$.pages", new List<DestinationJsonColumn>()
                     {
                         new DestinationJsonColumn{ Code ="PageName",Name ="页面名称" },
                         new DestinationJsonColumn{ Code ="PageUrl",Name ="页面地址" },
@@ -57,11 +55,16 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
                 jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageUrl", SourceJsonPath = "$.url", RootPath = jsonPathRoot.RootPath });
                 jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageNamespace", SourceJsonPath = "$.namespace", RootPath = jsonPathRoot.RootPath });
 
-                var result = await jsonDataProvider.GetJsonData(jsonPathRoot);
 
-                var resultJson = System.Text.Json.JsonSerializer.Serialize(result);
+                IJsonRequestSource requestSource = new JsonHttpApiRequestSource(new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri("https://s.alicdn.com/@xconfig/flasher_classic/manifest") });
 
-                Assert.True(!string.IsNullOrEmpty(resultJson));
+                var apiJsonStr = await jsonDataProvider.GetJsonDataAsync(requestSource, default);
+
+                IJsonColumnMapper jsonColumnMapper = scope.ServiceProvider.GetService<IJsonColumnMapper>()!;
+
+                var resultJson = jsonColumnMapper.MapToCollection(apiJsonStr, jsonPathRoot);
+
+                Assert.True(!string.IsNullOrEmpty(resultJson.MapJsonStr));
             }
         }
     }
