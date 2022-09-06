@@ -1,6 +1,7 @@
 ﻿using JsonPathConverter.Abstractions;
 using JsonPathConverter.ColumnMapper.NewObject;
 using JsonPathConverter.ColumnMapper.ReplaceKey;
+using JsonPathConverter.JsonSource.HttpApi.Abstractions;
 using JsonPathConverter.JsonSoure.HttpApi;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -54,7 +55,6 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
                 jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageName", SourceJsonPath = "$.name", RootPath = jsonPathRoot.RootPath });
                 jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageUrl", SourceJsonPath = "$.url", RootPath = jsonPathRoot.RootPath });
                 jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageNamespace", SourceJsonPath = "$.namespace", RootPath = jsonPathRoot.RootPath });
-
 
                 IJsonRequestSource requestSource = new JsonHttpApiRequestSource(new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri("https://s.alicdn.com/@xconfig/flasher_classic/manifest") });
 
