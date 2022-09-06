@@ -1,4 +1,5 @@
 ﻿using IdentityModel.Client;
+using JsonPathConverter.JsonSource.HttpApi.Token;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -8,14 +9,14 @@ namespace JsonPathConverter.JsonSoure.HttpApi
     public class AccessTokenDelegatingHandler : DelegatingHandler
     {
         private readonly ILogger _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITokenService _tokenService;
 
         public AccessTokenDelegatingHandler(
             ILogger<AccessTokenDelegatingHandler> logger,
-            IHttpContextAccessor httpContextAccessor)
+            ITokenService tokenService)
         {
             _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
+            _tokenService = tokenService;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -25,7 +26,7 @@ namespace JsonPathConverter.JsonSoure.HttpApi
                 return await base.SendAsync(request, cancellationToken);
             }
 
-            var attachAccessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var attachAccessToken = await _tokenService.GetToken();
 
             request.SetBearerToken(attachAccessToken);
 

@@ -1,4 +1,5 @@
 ﻿using JsonPathConverter.Abstractions;
+using JsonPathConverter.JsonSource.HttpApi.Token;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using System.Net;
@@ -7,8 +8,10 @@ namespace JsonPathConverter.JsonSoure.HttpApi
 {
     public static class HttpApiDependencyInjection
     {
-        private static IServiceCollection AddHttpApiClientAttachToken(this IServiceCollection serviceCollection)
+        private static IServiceCollection AddHttpApiClientWithToken(this IServiceCollection serviceCollection, Action<TokenClientOptions> tokenClientOptions)
         {
+            serviceCollection.Configure(tokenClientOptions);
+
             serviceCollection.AddHttpClient("HttpApiJsonDataProvider_RequestJsonDataProviderUri")
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddTransientHttpErrorPolicy(builder =>
@@ -22,6 +25,8 @@ namespace JsonPathConverter.JsonSoure.HttpApi
             {
                 AutomaticDecompression = DecompressionMethods.All
             });
+
+            serviceCollection.AddTokenService("HttpApiJsonDataProvider_TokenClient");
 
             return serviceCollection;
         }
@@ -44,9 +49,9 @@ namespace JsonPathConverter.JsonSoure.HttpApi
             return serviceCollection;
         }
 
-        public static IServiceCollection AddHttpApiJsonDataProviderAttachToken(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddHttpApiJsonDataProviderWithToken(this IServiceCollection serviceCollection, Action<TokenClientOptions> tokenClientOptions)
         {
-            serviceCollection.AddHttpApiClientAttachToken();
+            serviceCollection.AddHttpApiClientWithToken(tokenClientOptions);
             serviceCollection.AddSingleton<IJsonDataProvider, HttpApiJsonDataProvider>();
             return serviceCollection;
         }

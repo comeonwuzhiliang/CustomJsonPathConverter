@@ -33,9 +33,32 @@ json列转换器，主要是实现生成替换key值的功能。
 
 json数据来源提供者，该提供者是通过访问Api的方式来获取json数据。
 
+###### JsonPathConverter.JsonSoure.HttpApi.Token
+
+提供HttpApi调用时获取AccessToken的功能，可以配置OAuth2.0中的（client_credentials、password、authorization_code、refresh_token、urn:ietf:params:oauth:grant-type:device_code），**如果没有配置就是调用者的Token**
+
+``` json
+{
+    "tokenClient":{
+        "IdsHost": "http://ids....",
+        "GrantType": "client_credentials",
+        "TokenRequest": {
+          "Scope": "a b c",
+          "ClientId": "abc",
+          "ClientSecret": "abc-abc-abc"
+        }
+    }
+}
+```
+
+
+
 ### 依赖注入
 
 ```C#
+
+serviceCollection.AddHttpApiJsonDataProviderWithToken(Configuration.GetSelection("tokenClient").Bind);
+// 或者无需Token的项目
 serviceCollection.AddHttpApiJsonDataProvider();
 
 serviceCollection.AddColumnMapperReplaceKey();
@@ -80,4 +103,4 @@ IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
 - [ ] 支持列类型的转换
 - [ ] 使用新的json字符串的提供者，内部使用JsonElement的ObjectEnumerator内置对象的Current的Name，来实现忽略大小写的功能
-- [ ] HttpApi层里面的token的来源需要与自定义拦截器解耦，需要提供标准的OAuth2.0协议的获取token方式
+- [ ] 测试HttpApi TokenService 里面的各种Oauth2.0协议还有附属Token
