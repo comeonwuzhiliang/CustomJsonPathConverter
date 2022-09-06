@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JsonPathConverter.Abstractions\JsonPathConverter.Abstractions.csproj" />
+    <ProjectReference Include="..\JsonPathConverter.JsonSource.HttpApi.Abstractions\JsonPathConverter.JsonSource.HttpApi.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

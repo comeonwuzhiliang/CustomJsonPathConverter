@@ -1,13 +1,8 @@
 ﻿using JsonPathConverter.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace JsonPathConverter.JsonSoure.HttpApi
+namespace JsonPathConverter.JsonSource.HttpApi.Abstractions
 {
-    public class JsonHttpApiRequestSource : IJsonRequestSource
+    public class JsonHttpApiRequestSource: IJsonRequestSource
     {
         public JsonHttpApiRequestSource(HttpRequestMessage httpRequestMessage)
         {
@@ -15,7 +10,5 @@ namespace JsonPathConverter.JsonSoure.HttpApi
         }
 
         public HttpRequestMessage HttpRequestMessage { get; set; }
-
-
     }
 }

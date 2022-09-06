@@ -1,4 +1,5 @@
 ﻿using JsonPathConverter.Abstractions;
+using JsonPathConverter.JsonSource.HttpApi.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace JsonPathConverter.JsonSoure.HttpApi
