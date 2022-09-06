@@ -13,6 +13,10 @@
 1. IJsonColumnMapper：Json列转换器
 2. IJsonDataProvider：Json数据来源提供者
 
+#####  JsonPathConverter.JsonSource.HttpApi.Abstractions
+
+HttpApi 抽象类
+
 
 
 #### 实现层
