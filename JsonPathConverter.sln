@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.ColumnMap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.ColumnMapper.NewObject.Test", "test\JsonPathConverter.ColumnMapper.NewObject.Test\JsonPathConverter.ColumnMapper.NewObject.Test.csproj", "{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPathConverter.JsonSource.HttpApi.Abstractions", "src\JsonPathConverter.JsonSource.HttpApi.Abstractions\JsonPathConverter.JsonSource.HttpApi.Abstractions.csproj", "{A6FF04A9-E596-4ECD-9DF4-F85C46C6AE94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi.Abstractions", "src\JsonPathConverter.JsonSource.HttpApi.Abstractions\JsonPathConverter.JsonSource.HttpApi.Abstractions.csproj", "{A6FF04A9-E596-4ECD-9DF4-F85C46C6AE94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPathConverter.JsonSource.HttpApi.Token", "src\JsonPathConverter.JsonSource.HttpApi.Token\JsonPathConverter.JsonSource.HttpApi.Token.csproj", "{59ED4171-E95A-4C6F-99DA-F42F4BC4C12B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,10 @@ Global
 		{A6FF04A9-E596-4ECD-9DF4-F85C46C6AE94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6FF04A9-E596-4ECD-9DF4-F85C46C6AE94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6FF04A9-E596-4ECD-9DF4-F85C46C6AE94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59ED4171-E95A-4C6F-99DA-F42F4BC4C12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59ED4171-E95A-4C6F-99DA-F42F4BC4C12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59ED4171-E95A-4C6F-99DA-F42F4BC4C12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59ED4171-E95A-4C6F-99DA-F42F4BC4C12B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{0916B7F4-9986-41A6-901B-B2DB64C690E2} = {C05F7435-FB3B-4941-B804-0F00D2D709A4}
 		{0F4B2F13-F823-402B-BF3F-7A5EA6BF13E9} = {C05F7435-FB3B-4941-B804-0F00D2D709A4}
 		{A6FF04A9-E596-4ECD-9DF4-F85C46C6AE94} = {D539AF33-3750-4985-AF54-94DC434086BC}
+		{59ED4171-E95A-4C6F-99DA-F42F4BC4C12B} = {D539AF33-3750-4985-AF54-94DC434086BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FC65FB8-37D5-4D11-BD7E-C532587C97B7}
