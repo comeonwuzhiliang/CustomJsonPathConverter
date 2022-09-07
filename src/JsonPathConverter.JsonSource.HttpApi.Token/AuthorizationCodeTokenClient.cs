@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace JsonPathConverter.JsonSource.HttpApi.Token
 {
-    internal class AuthorizationCodeTokenClient : ITokenClient<AuthorizationCodeTokenRequest>
+    public class AuthorizationCodeTokenClient : ITokenClient<AuthorizationCodeTokenRequest>
     {
         private readonly ILogger _logger;
         private readonly HttpClient _httpClient;
@@ -19,8 +19,13 @@ namespace JsonPathConverter.JsonSource.HttpApi.Token
             _logger = logger;
         }
 
-        public async Task<string> GetAccessTokenAsync(AuthorizationCodeTokenRequest request, CancellationToken cancellationToken = default)
+        public async Task<string> GetAccessTokenAsync(AuthorizationCodeTokenRequest? request, CancellationToken cancellationToken = default)
         {
+            if (request == null)
+            {
+                return string.Empty;
+            }
+
             var discovery = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
             {
                 Address = _options.IdsHost,

@@ -2,8 +2,10 @@
 using JsonPathConverter.ColumnMapper.NewObject;
 using JsonPathConverter.ColumnMapper.ReplaceKey;
 using JsonPathConverter.JsonSource.HttpApi.Abstractions;
+using JsonPathConverter.JsonSource.HttpApi.Token;
 using JsonPathConverter.JsonSoure.HttpApi;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace JsonPathConverter.JsonSource.HttpApi.Test
@@ -15,14 +17,21 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
         {
             IServiceCollection serviceCollection = new ServiceCollection();
 
-            serviceCollection.AddHttpApiJsonDataProvider();
+            serviceCollection.AddHttpApiJsonDataProviderWithToken(s => s.GrantType = "client_credentials");
 
             serviceCollection.AddColumnMapperReplaceKey();
+
+            serviceCollection.AddLogging();
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
             using (var scope = serviceProvider.CreateScope())
             {
+                var tokenService = scope.ServiceProvider.GetService<ITokenService>()!;
+                Assert.True(tokenService.GetType() == typeof(TokenService));
+
+                var tokenOptions = scope.ServiceProvider.GetService<IOptions<TokenClientOptions>>();
+
                 Assert.True(scope.ServiceProvider.GetService<IJsonColumnMapper>()!.GetType() == typeof(ColumnMapperReplaceKey));
                 Assert.True(scope.ServiceProvider.GetService<IJsonDataProvider>()!.GetType() == typeof(HttpApiJsonDataProvider));
             }
