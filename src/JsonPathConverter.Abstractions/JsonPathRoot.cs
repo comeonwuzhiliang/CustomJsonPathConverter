@@ -18,13 +18,13 @@
         // prevent duplicate items when initializing the collection through the method
         public virtual void AddJsonPathMapper(JsonPathMapperRelation jsonPathMapperRelation)
         {
-            if (jsonPathMapperRelation.SourceJsonPath != null && RootPath != null)
-            {
-                if (jsonPathMapperRelation.SourceJsonPath.StartsWith("$."))
-                {
-                    jsonPathMapperRelation.SourceJsonPath = jsonPathMapperRelation.SourceJsonPath.Replace("$.", $"{RootPath}.");
-                }
-            }
+            //if (jsonPathMapperRelation.SourceJsonPath != null && RootPath != null)
+            //{
+            //    if (jsonPathMapperRelation.SourceJsonPath.StartsWith("$."))
+            //    {
+            //        jsonPathMapperRelation.SourceJsonPath = jsonPathMapperRelation.SourceJsonPath.Replace("$.", $"{RootPath}.");
+            //    }
+            //}
 
             if (!JsonPathMapperRelations.Contains(jsonPathMapperRelation))
             {

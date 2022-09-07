@@ -1,8 +1,8 @@
 ﻿using JsonPathConverter.Abstractions;
 using JsonPathConverter.ColumnMapper.ReplaceKey;
 using JsonPathConverter.Test.FakeObject;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Text.Json;
 using Xunit;
 
 namespace JsonPathConverter.HttpApi.Test
@@ -57,16 +57,16 @@ namespace JsonPathConverter.HttpApi.Test
             };
 
             // fake json source
-            string userActionsJsonStr = JsonSerializer.Serialize(userAction);
+            string userActionsJsonStr = JsonConvert.SerializeObject(userAction);
 
             JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
             jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
 
             var jsonMapper = new ColumnMapperReplaceKey().Map<JToken>(userActionsJsonStr, jsonPathRoot);
 
-            var destinationJsonStr = JsonSerializer.Serialize(jsonMapper.MapData);
+            var result = JsonConvert.SerializeObject(jsonMapper.MapData);
 
-            Assert.True(1 == 1);
+            Assert.True(jsonMapper.MapJsonStr != "");
         }
 
         [Fact]
@@ -100,8 +100,20 @@ namespace JsonPathConverter.HttpApi.Test
 
             jsonPathMapperRelations.Add(new JsonPathMapperRelation()
             {
+                DestinationJsonColumnCode = "TestDate",
+                SourceJsonPath = "$.UserLogs[0].Date"
+            });
+
+            jsonPathMapperRelations.Add(new JsonPathMapperRelation()
+            {
                 DestinationJsonColumnCode = "MotionName",
                 SourceJsonPath = "$[*].UserLogs[0].ActionName"
+            });
+
+            jsonPathMapperRelations.Add(new JsonPathMapperRelation()
+            {
+                DestinationJsonColumnCode = "MotionNameCopy",
+                SourceJsonPath = "$.UserLogs.ActionName"
             });
 
             // fake source json object
@@ -133,7 +145,7 @@ namespace JsonPathConverter.HttpApi.Test
             };
 
             // fake json source
-            string userActionsJsonStr = JsonSerializer.Serialize(userAction);
+            string userActionsJsonStr = JsonConvert.SerializeObject(userAction);
 
             JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
             jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));

@@ -36,9 +36,32 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                 return result;
             }
 
+            if (!string.IsNullOrEmpty(jsonPathRoot.RootPath))
+            {
+                try
+                {
+                    jToken = jToken.SelectToken(jsonPathRoot.RootPath);
+                }
+                catch
+                {
+                    throw new Exception("json来源的数组项配置不正确");
+                }
+            }
+
+            if (jToken == null)
+            {
+                return result;
+            }
+
+            JsonPathAdapter jsonPathAdapter = new JsonPathAdapter();
+
             foreach (var relation in relations)
             {
-                var matchJsonToekns = jToken.SelectTokens(relation.SourceJsonPath ?? string.Empty).ToList();
+                string jsonPath = relation.SourceJsonPath ?? string.Empty;
+
+                string jsonPathAdapterResult = jsonPathAdapter.Adapter(jsonPath, jToken);
+
+                var matchJsonToekns = jToken.SelectTokens(jsonPathAdapterResult).ToList();
                 if (matchJsonToekns == null || matchJsonToekns.Count() == 0)
                 {
                     result.PropertyInfos.Add(new JsonMapInfo

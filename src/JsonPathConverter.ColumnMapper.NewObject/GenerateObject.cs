@@ -10,13 +10,28 @@ namespace JsonPathConverter.ColumnMapper.NewObject
         {
             JsonDocument? jsonSourceDocument = JsonSerializer.Deserialize<JsonDocument>(jsonSourceStr);
 
+            if (jsonSourceDocument != null && jsonPathRoot.RootPath != null)
+            {
+                JsonElement jsonElement = jsonSourceDocument?.RootElement ?? default;
+                foreach (var item in jsonPathRoot.RootPath.Split("."))
+                {
+                    if (item == "$")
+                    {
+                        continue;
+                    }
+                    jsonElement = jsonElement.GetProperty(item);
+                }
+
+                var newJsonStr = JsonSerializer.Serialize(jsonElement);
+
+                jsonSourceDocument = JsonSerializer.Deserialize<JsonDocument>(newJsonStr);
+            }
+
             JsonElement rootJsonElement = jsonSourceDocument?.RootElement ?? default;
 
             List<JsonElementRelation> sourceJsonElementRelations = new List<JsonElementRelation>();
 
             Dictionary<string, JsonElementDetail> sourceColumnJsonElements = new Dictionary<string, JsonElementDetail>();
-
-            string rootPath = jsonPathRoot.RootPath ?? "$";
 
             // iterate destination json column
             foreach (var destinationJsonColumn in jsonPathRoot.DestinationJsonColumns ?? new List<DestinationJsonColumn>())
@@ -33,7 +48,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                 else
                 {
                     // find same as destination column name
-                    sourceJsonPath = $"{rootPath}.{destinationJsonColumn!.Code}";
+                    sourceJsonPath = $"$.{destinationJsonColumn!.Code}";
                 }
 
                 JsonElementDetail jsonElementDetail = new JsonElementDetail();
@@ -49,13 +64,6 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                     {
                         sourceJsonColumnElementRelations.Add(new JsonElementRelation { Self = rootJsonElement });
                         return sourceJsonColumnElementRelations;
-                    }
-
-                    bool isRecordAncestors = false;
-
-                    if (!rootPath.Contains($".{path}.") && !rootPath.EndsWith($".{path}"))
-                    {
-                        isRecordAncestors = true;
                     }
 
                     foreach (var je in jes)
@@ -84,7 +92,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                                         ArrayId = guid,
                                         IsArray = isArray,
                                         Self = jsonElement.GetProperty(path),
-                                        Ancestors = isRecordAncestors ? new List<JsonElement>(je.Ancestors) { je.Self, jsonElement } : new List<JsonElement>()
+                                        Ancestors = new List<JsonElement>(je.Ancestors) { je.Self, jsonElement }
                                     };
                                     sourceJsonColumnElementRelations.Add(jsonElementRelation);
                                 }
@@ -95,8 +103,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                                 {
                                     ColumnName = destinationJsonColumn.Code!,
                                     Self = je.Self.GetProperty(path),
-                                    Ancestors = isRecordAncestors ? new List<JsonElement>(je.Ancestors) { je.Self } :
-                                    new List<JsonElement>()
+                                    Ancestors = new List<JsonElement>(je.Ancestors) { je.Self }
                                 };
                                 sourceJsonColumnElementRelations.Add(jsonElementRelation);
                             }
