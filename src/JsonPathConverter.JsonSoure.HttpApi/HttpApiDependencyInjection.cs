@@ -8,12 +8,24 @@ namespace JsonPathConverter.JsonSoure.HttpApi
 {
     public static class HttpApiDependencyInjection
     {
-        private static IServiceCollection AddHttpApiClientWithToken(this IServiceCollection serviceCollection, Action<TokenClientOptions> tokenClientOptions)
+        private static IServiceCollection AddHttpApiClientWithToken(this IServiceCollection serviceCollection, Action<TokenClientOptions>? tokenClientOptions = null)
         {
-            serviceCollection.Configure(tokenClientOptions);
+            if (tokenClientOptions == null)
+            {
+                serviceCollection.Configure(new Action<TokenClientOptions>(s => { s.GrantType = ""; }));
+            }
+            else
+            {
+                serviceCollection.Configure(tokenClientOptions);
+            }
+
+            serviceCollection.AddTokenService("HttpApiJsonDataProvider_TokenClient");
 
             serviceCollection.AddHttpClient("HttpApiJsonDataProvider_RequestJsonDataProviderUri")
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+                .AddHttpMessageHandler(sp => {
+                    var tokenService = sp.GetService<ITokenService>();
+                    return ActivatorUtilities.CreateInstance<AccessTokenDelegatingHandler>(sp, tokenService!);
+                })
                 .AddTransientHttpErrorPolicy(builder =>
                         builder.WaitAndRetryAsync(new[]
                         {
@@ -25,8 +37,6 @@ namespace JsonPathConverter.JsonSoure.HttpApi
             {
                 AutomaticDecompression = DecompressionMethods.All
             });
-
-            serviceCollection.AddTokenService("HttpApiJsonDataProvider_TokenClient");
 
             return serviceCollection;
         }
@@ -49,7 +59,7 @@ namespace JsonPathConverter.JsonSoure.HttpApi
             return serviceCollection;
         }
 
-        public static IServiceCollection AddHttpApiJsonDataProviderWithToken(this IServiceCollection serviceCollection, Action<TokenClientOptions> tokenClientOptions)
+        public static IServiceCollection AddHttpApiJsonDataProviderWithToken(this IServiceCollection serviceCollection, Action<TokenClientOptions>? tokenClientOptions = null)
         {
             serviceCollection.AddHttpApiClientWithToken(tokenClientOptions);
             serviceCollection.AddSingleton<IJsonDataProvider, HttpApiJsonDataProvider>();

@@ -12,6 +12,8 @@ namespace JsonPathConverter.JsonSource.HttpApi.Token
     {
         public static IServiceCollection AddTokenService(this IServiceCollection services, string tokenClientName)
         {
+            services.AddHttpClient(tokenClientName);
+
             services.TryAddSingleton<ITokenService>(sp =>
             {
                 var options = sp.GetService<IOptions<TokenClientOptions>>();
@@ -27,19 +29,19 @@ namespace JsonPathConverter.JsonSource.HttpApi.Token
             Func<CancellationToken, Task<string>> tokenInvoker = clientOptions.GrantType switch
             {
                 OidcConstants.GrantTypes.ClientCredentials => cancellationToken => ActivatorUtilities.CreateInstance<ClientCredentialsTokenClient>(sp, tokenClient)
-                    .GetAccessTokenAsync(clientOptions.TokenRequest.Get<ClientCredentialsTokenRequest>(), cancellationToken),
+                    .GetAccessTokenAsync(clientOptions.TokenRequest?.Get<ClientCredentialsTokenRequest>(), cancellationToken),
 
                 OidcConstants.GrantTypes.AuthorizationCode => cancellationToken => ActivatorUtilities.CreateInstance<AuthorizationCodeTokenClient>(sp, tokenClient)
-                    .GetAccessTokenAsync(clientOptions.TokenRequest.Get<AuthorizationCodeTokenRequest>(), cancellationToken),
+                    .GetAccessTokenAsync(clientOptions.TokenRequest?.Get<AuthorizationCodeTokenRequest>(), cancellationToken),
 
                 OidcConstants.GrantTypes.Password => cancellationToken => ActivatorUtilities.CreateInstance<PasswordTokenClient>(sp, tokenClient)
-                    .GetAccessTokenAsync(clientOptions.TokenRequest.Get<PasswordTokenRequest>(), cancellationToken),
+                    .GetAccessTokenAsync(clientOptions.TokenRequest?.Get<PasswordTokenRequest>(), cancellationToken),
 
                 OidcConstants.GrantTypes.DeviceCode => cancellationToken => ActivatorUtilities.CreateInstance<DeviceTokenClient>(sp, tokenClient)
-                    .GetAccessTokenAsync(clientOptions.TokenRequest.Get<DeviceTokenRequest>(), cancellationToken),
+                    .GetAccessTokenAsync(clientOptions.TokenRequest?.Get<DeviceTokenRequest>(), cancellationToken),
 
                 OidcConstants.GrantTypes.RefreshToken => cancellationToken => ActivatorUtilities.CreateInstance<RefreshTokenClient>(sp, tokenClient)
-                    .GetAccessTokenAsync(clientOptions.TokenRequest.Get<RefreshTokenRequest>(), cancellationToken),
+                    .GetAccessTokenAsync(clientOptions.TokenRequest?.Get<RefreshTokenRequest>(), cancellationToken),
 
                 _ => cancellationToken => ActivatorUtilities.CreateInstance<AttachTokenClient>(sp, tokenClient)
                     .GetAccessTokenAsync(new AttachTokenRequest(), cancellationToken),
