@@ -24,8 +24,6 @@ namespace JsonPathConverter.JsonSource.HttpApi.Token
         {
             var tokenClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient(tokenClientName);
 
-            var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
-
             Func<CancellationToken, Task<string>> tokenInvoker = clientOptions.GrantType switch
             {
                 OidcConstants.GrantTypes.ClientCredentials => cancellationToken => ActivatorUtilities.CreateInstance<ClientCredentialsTokenClient>(sp, tokenClient)

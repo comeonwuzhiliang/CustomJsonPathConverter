@@ -26,9 +26,9 @@ namespace JsonPathConverter.JsonSoure.HttpApi
                 return await base.SendAsync(request, cancellationToken);
             }
 
-            var attachAccessToken = await _tokenService.GetToken();
+            var accessToken = await _tokenService.GetToken();
 
-            request.SetBearerToken(attachAccessToken);
+            request.SetBearerToken(accessToken);
 
             var response = await base.SendAsync(request, cancellationToken);
 
