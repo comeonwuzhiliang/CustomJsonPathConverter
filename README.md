@@ -103,4 +103,4 @@ IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
 - [ ] 支持列类型的转换
 - [ ] 使用新的json字符串的提供者，内部使用JsonElement的ObjectEnumerator内置对象的Current的Name，来实现忽略大小写的功能
-- [ ] 测试HttpApi TokenService 里面的各种Oauth2.0协议还有附属Token
+- [x] 测试HttpApi TokenService 里面的各种Oauth2.0协议还有附属Token
