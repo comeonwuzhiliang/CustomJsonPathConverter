@@ -1,4 +1,5 @@
-﻿using JsonPathConverter.Abstractions;
+﻿using IdentityModel.Client;
+using JsonPathConverter.Abstractions;
 using JsonPathConverter.JsonSource.HttpApi.Abstractions;
 using JsonPathConverter.JsonSource.HttpApi.Token;
 using JsonPathConverter.JsonSoure.HttpApi;
@@ -17,7 +18,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
     /// </summary>
     public class ClientCredentialsTest
     {
-        public static IConfiguration Configuration;
+        public static IConfiguration? Configuration;
 
         public static IHostBuilder CreateHostBuilder() =>
             Host.CreateDefaultBuilder()
@@ -44,7 +45,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
             using (var scope = build.Services.CreateScope())
             {
-                string requestUrl = Configuration["client_credentials:ClientUrl"];
+                string requestUrl = Configuration!["client_credentials:ClientUrl"];
 
                 ITokenService tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
 

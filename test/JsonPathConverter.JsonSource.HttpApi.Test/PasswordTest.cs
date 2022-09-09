@@ -16,7 +16,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
     /// </summary>
     public class PasswordTest
     {
-        public static IConfiguration Configuration;
+        public static IConfiguration? Configuration;
 
         public static IHostBuilder CreateHostBuilder() =>
             Host.CreateDefaultBuilder()
@@ -43,7 +43,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
             using (var scope = build.Services.CreateScope())
             {
-                string requestUrl = Configuration["password:ClientUrl"];
+                string requestUrl = Configuration!["password:ClientUrl"];
 
                 var httpFactory = scope.ServiceProvider.GetRequiredService<IHttpClientFactory>();
                 var client = httpFactory.CreateClient();
