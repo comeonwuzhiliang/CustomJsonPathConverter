@@ -1,6 +1,7 @@
 ﻿using JsonPathConverter.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections;
 
 namespace JsonPathConverter.ColumnMapper.ReplaceKey
 {
@@ -41,6 +42,17 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                 try
                 {
                     jToken = jToken.SelectToken(jsonPathRoot.RootPath);
+                    if (jToken != null && jToken.Type != JTokenType.Array
+                        && typeof(TData).IsGenericType
+                        && typeof(TData).IsAssignableTo(typeof(IEnumerable)))
+                    {
+                        result = new JsonMapResult<TData>((str) =>
+                        {
+                            var newStr = $"[{str}]";
+
+                            return JsonConvert.DeserializeObject<TData>(newStr);
+                        });
+                    }
                 }
                 catch
                 {

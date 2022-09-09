@@ -62,7 +62,7 @@ namespace JsonPathConverter.HttpApi.Test
             JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
             jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
 
-            var jsonMapper = new ColumnMapperReplaceKey().Map<JToken>(userActionsJsonStr, jsonPathRoot);
+            var jsonMapper = new ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
             var result = JsonConvert.SerializeObject(jsonMapper.MapData);
 
