@@ -22,6 +22,39 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
             return MapToStr<IDictionary<string, object?>>(jsonSourceStr, jsonPathRoot);
         }
 
+        public TData? CaptureObject<TData>(string jsonSourceStr, string path)
+        {
+            var jToken = JToken.Parse(jsonSourceStr);
+            if (jToken == null)
+            {
+                return default;
+            }
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                try
+                {
+                    jToken = jToken.SelectToken(path);
+                }
+                catch
+                {
+                    throw new Exception("json来源的数组项配置不正确");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("路径不能为空");
+            }
+
+            string jTokenStr = jToken?.ToString() ?? string.Empty;
+            if (string.IsNullOrEmpty(jTokenStr))
+            {
+                return default;
+            }
+
+            return JsonConvert.DeserializeObject<TData>(jTokenStr);
+        }
+
         private JsonMapResult<TData> MapToStr<TData>(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
             var result = new JsonMapResult<TData>((str) => JsonConvert.DeserializeObject<TData>(str));

@@ -53,6 +53,9 @@ namespace JsonPathConverter.ColumnMapper.NewObject
             return result;
         }
 
-
+        public TData? CaptureObject<TData>(string jsonSourceStr, string path)
+        {
+            return default;
+        }
     }
 }
