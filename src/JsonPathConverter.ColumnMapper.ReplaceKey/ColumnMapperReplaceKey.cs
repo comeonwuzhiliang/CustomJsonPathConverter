@@ -25,6 +25,9 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
         public TData? CaptureObject<TData>(string jsonSourceStr, string path)
         {
             var jToken = JToken.Parse(jsonSourceStr);
+
+            IEnumerable<JToken> jTokens;
+
             if (jToken == null)
             {
                 return default;
@@ -34,7 +37,9 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
             {
                 try
                 {
-                    jToken = jToken.SelectToken(path);
+                    string jsonPath = path;
+                    string jsonPathAdapterResult = new JsonPathAdapter().Adapter(jsonPath, jToken);
+                    jTokens = jToken.SelectTokens(jsonPathAdapterResult);
                 }
                 catch
                 {
@@ -46,13 +51,38 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                 throw new ArgumentException("路径不能为空");
             }
 
-            string jTokenStr = jToken?.ToString() ?? string.Empty;
-            if (string.IsNullOrEmpty(jTokenStr))
+            if (jTokens?.Any() == false)
             {
                 return default;
             }
 
-            return JsonConvert.DeserializeObject<TData>(jTokenStr);
+            if (typeof(TData).IsArray || typeof(TData) == typeof(object))
+            {
+                var jTokensStr = JsonConvert.SerializeObject(jTokens);
+                if (string.IsNullOrEmpty(jTokensStr))
+                {
+                    return default;
+                }
+                return JsonConvert.DeserializeObject<TData>(jTokensStr);
+            }
+            else
+            {
+                var jTokensStr = jTokens!.First().ToString();
+
+                if (typeof(TData) == typeof(Guid))
+                {
+                    var guid = Guid.Parse(jTokensStr);
+                    return (TData)Convert.ChangeType(guid, typeof(TData));
+                }
+
+                if (typeof(TData).IsAssignableTo(typeof(ValueType)) || typeof(TData) == typeof(string))
+                {
+                    return (TData)Convert.ChangeType(jTokensStr, typeof(TData));
+                }
+
+                return JsonConvert.DeserializeObject<TData>(jTokensStr);
+            }
+
         }
 
         private JsonMapResult<TData> MapToStr<TData>(string jsonSourceStr, JsonPathRoot jsonPathRoot)
