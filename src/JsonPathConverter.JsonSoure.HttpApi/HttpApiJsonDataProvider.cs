@@ -28,9 +28,12 @@ namespace JsonPathConverter.JsonSoure.HttpApi
 
                 result.EnsureSuccessStatusCode();
 
-                var apiJsonResult = await result.Content.ReadAsStringAsync(cancellationToken);
-
-                return apiJsonResult;
+                if (result.StatusCode != System.Net.HttpStatusCode.NoContent)
+                {
+                    var apiJsonResult = await result.Content.ReadAsStringAsync(cancellationToken);
+                    return apiJsonResult;
+                }
+                return string.Empty;
             }
             else
             {
