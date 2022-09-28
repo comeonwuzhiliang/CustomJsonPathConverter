@@ -1,61 +1,50 @@
 ﻿using JsonPathConverter.Abstractions;
-using System.Text.Json;
-using static System.Text.Json.JsonElement;
+using JsonPathConverter.Newtonsoft.Helper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections;
 
 namespace JsonPathConverter.ColumnMapper.NewObject
 {
     public class ColumnMapperNewObject : IJsonColumnMapper
     {
-        public JsonMapResult<TData> Map<TData>(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        public IEnumerable<IDictionary<string, object?>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            if (typeof(TData).IsArray)
-            {
-                var collectionResult = MapToCollection(jsonSourceStr, jsonPathRoot);
+            JArray? jArray = new GenerateNewObject().MapArray(jsonSourceStr, jsonPathRoot);
 
-                var jsonStr = collectionResult.MapJsonStr;
-
-                var jsonData = JsonSerializer.Deserialize<TData>(jsonStr);
-
-                return new JsonMapResult<TData>(jsonData) { MapJsonStr = jsonStr };
-            }
-            else
-            {
-                var dicResult = MapToDic(jsonSourceStr, jsonPathRoot);
-
-                var jsonStr = dicResult.MapJsonStr;
-
-                var jsonData = JsonSerializer.Deserialize<TData>(jsonStr);
-
-                return new JsonMapResult<TData>(jsonData) { MapJsonStr = jsonStr };
-            }
+            return jArray?.ToObject<IEnumerable<IDictionary<string, object?>>>() ?? new List<IDictionary<string, object?>>();
         }
 
-        public JsonMapResult<IEnumerable<IDictionary<string, object?>>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        public IDictionary<string, object?> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            var list = GenerateObject.MapToList(jsonSourceStr, jsonPathRoot);
+            object? obj = new GenerateNewObject().Map(jsonSourceStr, jsonPathRoot);
 
-            var result = new JsonMapResult<IEnumerable<IDictionary<string, object?>>>(list);
+            if (obj == null)
+            {
+                return new Dictionary<string, object?>();
+            }
 
-            result.MapJsonStr = JsonSerializer.Serialize(list);
+            if (obj is JObject)
+            {
+                return (obj as JObject)?.ToObject<IDictionary<string, object?>>() ?? new Dictionary<string, object?>();
+            }
 
-            return result;
+            if (obj is JArray)
+            {
+                JArray? jArray = obj as JArray;
 
-        }
+                if (jArray?.Any() == true && jArray[0] != null)
+                {
+                    return jArray[0].ToObject<IDictionary<string, object?>>() ?? new Dictionary<string, object?>();
+                }
+            }
 
-        public JsonMapResult<IDictionary<string, object?>> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
-        {
-            var obj = GenerateObject.MapToObject(jsonSourceStr, jsonPathRoot);
-
-            var result = new JsonMapResult<IDictionary<string, object?>>(obj);
-
-            result.MapJsonStr = JsonSerializer.Serialize(obj);
-
-            return result;
+            return new Dictionary<string, object?>();
         }
 
         public TData? CaptureObject<TData>(string jsonSourceStr, string path)
         {
-            return default;
+            return new CaptureObject().Capture<TData>(jsonSourceStr, path);
         }
     }
 }

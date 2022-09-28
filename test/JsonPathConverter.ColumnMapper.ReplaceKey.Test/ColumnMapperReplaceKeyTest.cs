@@ -1,24 +1,17 @@
 ﻿using JsonPathConverter.Abstractions;
 using JsonPathConverter.ColumnMapper.ReplaceKey;
-using JsonPathConverter.Test.FakeObject;
+using JsonPathConverter.FakeObject;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace JsonPathConverter.HttpApi.Test
 {
-    public class JsonPathMatch
+    public class ColumnMapperReplaceKeyTest
     {
         [Fact]
         public void JsonPathMatchColumnSingleObject()
         {
-            List<DestinationJsonColumn> destinationJsonColumns = new List<DestinationJsonColumn>();
-
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "Id", Name = "用户Id" });
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "Name", Name = "用户编号" });
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "LogsMessage", Name = "用户日志内容" });
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "OtherRemark", Name = "其他备注" });
-
             List<JsonPathMapperRelation> jsonPathMapperRelations = new List<JsonPathMapperRelation>();
             jsonPathMapperRelations.Add(new JsonPathMapperRelation()
             {
@@ -59,26 +52,17 @@ namespace JsonPathConverter.HttpApi.Test
             // fake json source
             string userActionsJsonStr = JsonConvert.SerializeObject(userAction);
 
-            JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
+            JsonPathRoot jsonPathRoot = new JsonPathRoot("$");
             jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
 
-            var jsonMapper = new ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
+            var jsonMapper = new ColumnMapper.ReplaceKey.ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
-            var result = JsonConvert.SerializeObject(jsonMapper.MapData);
-
-            Assert.True(jsonMapper.MapJsonStr != "");
+            Assert.NotEmpty(jsonMapper);
         }
 
         [Fact]
         public void JsonPathMatchColumnMutipleArray()
         {
-            List<DestinationJsonColumn> destinationJsonColumns = new List<DestinationJsonColumn>();
-
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "Id", Name = "用户Id" });
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "Name", Name = "用户编号" });
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "LogsMessage", Name = "用户日志内容" });
-            destinationJsonColumns.Add(new DestinationJsonColumn { Code = "OtherRemark", Name = "其他备注" });
-
             List<JsonPathMapperRelation> jsonPathMapperRelations = new List<JsonPathMapperRelation>();
             jsonPathMapperRelations.Add(new JsonPathMapperRelation()
             {
@@ -147,12 +131,12 @@ namespace JsonPathConverter.HttpApi.Test
             // fake json source
             string userActionsJsonStr = JsonConvert.SerializeObject(userAction);
 
-            JsonPathRoot jsonPathRoot = new JsonPathRoot("$", destinationJsonColumns);
+            JsonPathRoot jsonPathRoot = new JsonPathRoot("$");
             jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
 
-            var mapResult = new ColumnMapperReplaceKey().Map<JToken>(userActionsJsonStr, jsonPathRoot);
+            var mapResult = new ColumnMapper.ReplaceKey.ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
-            var destinationJsonStr = mapResult.MapJsonStr;
+            var destinationJsonStr = JsonConvert.SerializeObject(mapResult);
 
             JToken token = JToken.Parse(destinationJsonStr);
 

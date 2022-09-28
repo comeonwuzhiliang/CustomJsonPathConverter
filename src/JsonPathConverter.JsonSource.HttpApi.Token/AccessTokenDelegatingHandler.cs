@@ -1,9 +1,8 @@
 ﻿using IdentityModel.Client;
-using JsonPathConverter.JsonSource.HttpApi.Token;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace JsonPathConverter.JsonSoure.HttpApi.Token
+namespace JsonPathConverter.JsonSource.HttpApi.Oauth
 {
     public class AccessTokenDelegatingHandler : DelegatingHandler
     {

@@ -1,6 +1,6 @@
-﻿namespace JsonPathConverter.Abstractions
+﻿namespace JsonPathConverter.ColumnMapper.ReplaceKey
 {
-    public class JsonMapInfo
+    internal class JsonMapInfo
     {
         public string SourcePath { get; set; } = string.Empty;
 

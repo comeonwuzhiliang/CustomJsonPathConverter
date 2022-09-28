@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace JsonPathConverter.JsonSource.HttpApi.Token
+namespace JsonPathConverter.JsonSource.HttpApi.Oauth
 {
     public class AttachTokenClient : ITokenClient<AttachTokenRequest>
     {

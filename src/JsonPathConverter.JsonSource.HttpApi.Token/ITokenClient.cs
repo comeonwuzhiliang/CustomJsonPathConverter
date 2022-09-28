@@ -1,6 +1,6 @@
 ﻿using IdentityModel.Client;
 
-namespace JsonPathConverter.JsonSource.HttpApi.Token
+namespace JsonPathConverter.JsonSource.HttpApi.Oauth
 {
     public interface ITokenClient<TRequest> where TRequest : TokenRequest
     {

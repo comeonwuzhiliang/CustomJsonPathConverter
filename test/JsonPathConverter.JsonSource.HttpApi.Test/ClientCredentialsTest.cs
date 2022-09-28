@@ -1,12 +1,7 @@
-﻿using IdentityModel.Client;
-using JsonPathConverter.Abstractions;
-using JsonPathConverter.JsonSource.HttpApi.Abstractions;
-using JsonPathConverter.JsonSource.HttpApi.Token;
-using JsonPathConverter.JsonSoure.HttpApi;
+﻿using JsonPathConverter.JsonSource.HttpApi.Oauth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace JsonPathConverter.JsonSource.HttpApi.Test

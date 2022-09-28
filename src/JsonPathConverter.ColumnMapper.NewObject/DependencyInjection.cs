@@ -1,9 +1,9 @@
 ﻿using JsonPathConverter.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+using JsonPathConverter.ColumnMapper.NewObject;
 
-namespace JsonPathConverter.ColumnMapper.NewObject
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ColumnMapperNewObjectDependencyInjection
+    public static class DependencyInjection
     {
         public static IServiceCollection AddColumnMapperNewObject(this IServiceCollection serviceCollection)
         {

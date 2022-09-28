@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace JsonPathConverter.ColumnMapper.ReplaceKey.Test
+namespace JsonPathConverter.Newtonsoft.Helper.Test
 {
     public class JsonPathAdapter
     {
@@ -10,7 +10,7 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey.Test
         {
             string json = "{\"name\":\"zhangsan\",\"age\":27,\"scores\":[{\"score\":98,\"subject\":\"math\",\"details\":[{\"id\":1,\"score\":10},{\"id\":2,\"score\":10}]},{\"score\":5,\"subject\":\"language\"}]}";
 
-            ReplaceKey.JsonPathAdapter jsonPathAdapter = new ReplaceKey.JsonPathAdapter();
+            Helper.JsonPathAdapter jsonPathAdapter = new Helper.JsonPathAdapter();
 
             JToken jToken = JObject.Parse(json);
 

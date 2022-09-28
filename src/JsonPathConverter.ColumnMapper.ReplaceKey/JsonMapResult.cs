@@ -1,6 +1,6 @@
-﻿namespace JsonPathConverter.Abstractions
+﻿namespace JsonPathConverter.ColumnMapper.ReplaceKey
 {
-    public class JsonMapResult<TData>
+    internal class JsonMapResult<TData>
     {
         public string MapJsonStr { get; set; } = string.Empty;
 

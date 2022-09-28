@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace JsonPathConverter.JsonSource.HttpApi.Token
+namespace JsonPathConverter.JsonSource.HttpApi.Oauth
 {
     public class DeviceTokenClient : ITokenClient<DeviceTokenRequest>
     {

@@ -1,4 +1,4 @@
-﻿namespace JsonPathConverter.Test.FakeObject
+﻿namespace JsonPathConverter.FakeObject
 {
     public class UserLog
     {
