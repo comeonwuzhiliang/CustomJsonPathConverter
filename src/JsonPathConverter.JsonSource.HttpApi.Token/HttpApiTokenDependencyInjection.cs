@@ -43,7 +43,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Token
                 OidcConstants.GrantTypes.RefreshToken => cancellationToken => ActivatorUtilities.CreateInstance<RefreshTokenClient>(sp, tokenClient)
                     .GetAccessTokenAsync(clientOptions.TokenRequest?.Get<RefreshTokenRequest>(), cancellationToken),
 
-                _ => cancellationToken => ActivatorUtilities.CreateInstance<AttachTokenClient>(sp, tokenClient)
+                _ => cancellationToken => ActivatorUtilities.CreateInstance<AttachTokenClient>(sp, sp.GetRequiredService<IHttpContextAccessor>())
                     .GetAccessTokenAsync(new AttachTokenRequest(), cancellationToken),
             };
 
