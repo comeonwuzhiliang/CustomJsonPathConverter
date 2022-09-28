@@ -2,42 +2,24 @@
 {
     public record JsonPathMapperRelation
     {
-        public string? RootPath { get; set; }
-
+        /// <summary>
+        /// 目标Json列Code
+        /// </summary>
         public string? DestinationJsonColumnCode { get; set; }
 
+        /// <summary>
+        /// 目标类类型
+        /// </summary>
+        public DestinationPropertyTypeEnum DestinationPropertyType { get; set; } = DestinationPropertyTypeEnum.Property;
+
+        /// <summary>
+        /// 子级映射关系
+        /// </summary>
+        public IEnumerable<JsonPathMapperRelation>? ChildRelations { get; set; }
+
+        /// <summary>
+        /// 来源的Json Path
+        /// </summary>
         public string? SourceJsonPath { get; set; }
-
-        public string[] GetFileds()
-        {
-            var fileds = new string[0];
-            var filedStr = this.SourceJsonPath;
-            if (string.IsNullOrEmpty(filedStr))
-            {
-                return fileds;
-            }
-            if (filedStr.StartsWith("$."))
-            {
-                filedStr = filedStr.Substring(2);
-
-            }
-            fileds = filedStr.Split('.');
-            return fileds;
-        }
-
-        public bool IsValidate()
-        {
-            if (string.IsNullOrEmpty(SourceJsonPath))
-            {
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(DestinationJsonColumnCode))
-            {
-                return false;
-            }
-
-            return true;
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace JsonPathConverter.JsonSource.HttpApi.Token
+﻿namespace JsonPathConverter.JsonSource.HttpApi.Oauth
 {
     public class TokenService : ITokenService
     {

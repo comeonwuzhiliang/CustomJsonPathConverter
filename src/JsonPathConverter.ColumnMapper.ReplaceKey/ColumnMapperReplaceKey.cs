@@ -2,94 +2,36 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections;
+using JsonPathConverter.Newtonsoft.Helper;
 
 namespace JsonPathConverter.ColumnMapper.ReplaceKey
 {
     public class ColumnMapperReplaceKey : IJsonColumnMapper
     {
-        public JsonMapResult<TData> Map<TData>(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        public IEnumerable<IDictionary<string, object?>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            return MapToStr<TData>(jsonSourceStr, jsonPathRoot);
+            var map = MapToStr<IEnumerable<IDictionary<string, object?>>>(jsonSourceStr, jsonPathRoot);
+
+            return map.MapData ?? new List<IDictionary<string, object?>>();
         }
 
-        public JsonMapResult<IEnumerable<IDictionary<string, object?>>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        public IDictionary<string, object?> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            return MapToStr<IEnumerable<IDictionary<string, object?>>>(jsonSourceStr, jsonPathRoot);
-        }
+            var map = MapToStr<IDictionary<string, object?>>(jsonSourceStr, jsonPathRoot);
 
-        public JsonMapResult<IDictionary<string, object?>> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
-        {
-            return MapToStr<IDictionary<string, object?>>(jsonSourceStr, jsonPathRoot);
+            return map.MapData ?? new Dictionary<string, object?>();
         }
 
         public TData? CaptureObject<TData>(string jsonSourceStr, string path)
         {
-            var jToken = JToken.Parse(jsonSourceStr);
-
-            IEnumerable<JToken> jTokens;
-
-            if (jToken == null)
-            {
-                return default;
-            }
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                try
-                {
-                    string jsonPath = path;
-                    string jsonPathAdapterResult = new JsonPathAdapter().Adapter(jsonPath, jToken);
-                    jTokens = jToken.SelectTokens(jsonPathAdapterResult);
-                }
-                catch
-                {
-                    throw new Exception("json来源的数组项配置不正确");
-                }
-            }
-            else
-            {
-                throw new ArgumentException("路径不能为空");
-            }
-
-            if (jTokens?.Any() == false)
-            {
-                return default;
-            }
-
-            if (typeof(TData).IsArray || typeof(TData) == typeof(object))
-            {
-                var jTokensStr = JsonConvert.SerializeObject(jTokens);
-                if (string.IsNullOrEmpty(jTokensStr))
-                {
-                    return default;
-                }
-                return JsonConvert.DeserializeObject<TData>(jTokensStr);
-            }
-            else
-            {
-                var jTokensStr = jTokens!.First().ToString();
-
-                if (typeof(TData) == typeof(Guid))
-                {
-                    var guid = Guid.Parse(jTokensStr);
-                    return (TData)Convert.ChangeType(guid, typeof(TData));
-                }
-
-                if (typeof(TData).IsAssignableTo(typeof(ValueType)) || typeof(TData) == typeof(string))
-                {
-                    return (TData)Convert.ChangeType(jTokensStr, typeof(TData));
-                }
-
-                return JsonConvert.DeserializeObject<TData>(jTokensStr);
-            }
-
+            return new CaptureObject().Capture<TData>(jsonSourceStr, path);
         }
 
         private JsonMapResult<TData> MapToStr<TData>(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
             var result = new JsonMapResult<TData>((str) => JsonConvert.DeserializeObject<TData>(str));
 
-            var relations = jsonPathRoot.JsonPathMapperRelations?.Where(s => s.IsValidate()).OrderByDescending(s => s.GetFileds().Length).ToList();
+            var relations = jsonPathRoot.JsonPathMapperRelations?.ToList();
             if (relations == null || relations.Count == 0)
             {
                 return result;

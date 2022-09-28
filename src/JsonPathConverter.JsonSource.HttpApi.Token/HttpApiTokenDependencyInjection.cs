@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace JsonPathConverter.JsonSource.HttpApi.Token
+namespace JsonPathConverter.JsonSource.HttpApi.Oauth
 {
     public static class HttpApiTokenDependencyInjection
     {

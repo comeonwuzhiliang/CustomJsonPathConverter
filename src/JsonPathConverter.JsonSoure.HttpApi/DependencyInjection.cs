@@ -1,13 +1,12 @@
 ﻿using JsonPathConverter.Abstractions;
-using JsonPathConverter.JsonSource.HttpApi.Token;
-using JsonPathConverter.JsonSoure.HttpApi.Token;
-using Microsoft.Extensions.DependencyInjection;
+using JsonPathConverter.JsonSource.HttpApi.Oauth;
+using JsonPathConverter.JsonSoure.HttpApi;
 using Polly;
 using System.Net;
 
-namespace JsonPathConverter.JsonSoure.HttpApi
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class HttpApiDependencyInjection
+    public static class DependencyInjection
     {
         private static IServiceCollection AddHttpApiClientWithToken(this IServiceCollection serviceCollection, Action<TokenClientOptions>? tokenClientOptions = null)
         {
@@ -23,7 +22,8 @@ namespace JsonPathConverter.JsonSoure.HttpApi
             serviceCollection.AddTokenService("HttpApiJsonDataProvider_TokenClient");
 
             serviceCollection.AddHttpClient("HttpApiJsonDataProvider_RequestJsonDataProviderUri")
-                .AddHttpMessageHandler(sp => {
+                .AddHttpMessageHandler(sp =>
+                {
                     var tokenService = sp.GetService<ITokenService>();
                     return ActivatorUtilities.CreateInstance<AccessTokenDelegatingHandler>(sp, tokenService!);
                 })

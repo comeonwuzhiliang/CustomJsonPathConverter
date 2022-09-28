@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JsonPathConverter.Abstractions\JsonPathConverter.Abstractions.csproj" />
+    <ProjectReference Include="..\JsonPathConverter.Newtonsoft.Helper\JsonPathConverter.Newtonsoft.Helper.csproj" />
   </ItemGroup>
 
 </Project>

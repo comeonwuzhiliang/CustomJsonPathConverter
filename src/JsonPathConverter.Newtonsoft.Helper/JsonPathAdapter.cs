@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace JsonPathConverter.ColumnMapper.ReplaceKey
+namespace JsonPathConverter.Newtonsoft.Helper
 {
     public class JsonPathAdapter
     {
         private Dictionary<string, string> jsonPathAdapters = new Dictionary<string, string>();
 
-        public string Adapter(string jsonSourcePath, JToken jToken)
+        public string Adapter(string jsonSourcePath, JToken jToken, bool isAnalysisLast = false)
         {
             string adapterResult = string.Empty;
             string jsonSourcePathSelectionSplicing = string.Empty;
@@ -38,7 +38,7 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                 try
                 {
                     var temporaryAdapterResult = adapterResult + jsonSourcePathSelectionItem;
-                    if (i == jsonSourcePathSelects.Length - 1)
+                    if (isAnalysisLast == false && i == jsonSourcePathSelects.Length - 1)
                     {
                         adapterResult = temporaryAdapterResult;
                         break;
@@ -62,10 +62,6 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                         }
                         else
                         {
-                            //var temporaryAdapterResult = adapterResult + jsonSourcePathSelectionItem + "[*]";
-                            //jToken.SelectTokens(temporaryAdapterResult);
-                            //adapterResult = temporaryAdapterResult;
-
                             adapterResult = adapterResult + jsonSourcePathSelectionItem + "[*]";
                         }
 

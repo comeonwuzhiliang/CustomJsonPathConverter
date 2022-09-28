@@ -1,8 +1,7 @@
 ﻿using JsonPathConverter.Abstractions;
-using JsonPathConverter.ColumnMapper.NewObject;
 using JsonPathConverter.ColumnMapper.ReplaceKey;
 using JsonPathConverter.JsonSource.HttpApi.Abstractions;
-using JsonPathConverter.JsonSource.HttpApi.Token;
+using JsonPathConverter.JsonSource.HttpApi.Oauth;
 using JsonPathConverter.JsonSoure.HttpApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -44,7 +43,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
             serviceCollection.AddHttpApiJsonDataProvider();
 
-            serviceCollection.AddColumnMapperNewObject();
+            serviceCollection.AddColumnMapperReplaceKey();
 
             serviceCollection.AddLogging();
 
@@ -53,17 +52,11 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
             using (var scope = serviceProvider.CreateScope())
             {
                 IJsonDataProvider jsonDataProvider = scope.ServiceProvider.GetService<IJsonDataProvider>()!;
-                JsonPathRoot jsonPathRoot = new JsonPathRoot("$.pages", new List<DestinationJsonColumn>()
-                    {
-                        new DestinationJsonColumn{ Code ="PageName",Name ="页面名称" },
-                        new DestinationJsonColumn{ Code ="PageUrl",Name ="页面地址" },
-                        new DestinationJsonColumn{ Code ="PageNamespace",Name ="页面空间" },
-                        new DestinationJsonColumn{ Code ="id",Name ="Id" },
-                    });
+                JsonPathRoot jsonPathRoot = new JsonPathRoot("$.pages");
 
-                jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageName", SourceJsonPath = "$.name", RootPath = jsonPathRoot.RootPath });
-                jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageUrl", SourceJsonPath = "$.url", RootPath = jsonPathRoot.RootPath });
-                jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageNamespace", SourceJsonPath = "$.namespace", RootPath = jsonPathRoot.RootPath });
+                jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageName", SourceJsonPath = "$.name" });
+                jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageUrl", SourceJsonPath = "$.url" });
+                jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageNamespace", SourceJsonPath = "$.namespace" });
 
                 IJsonRequestSource requestSource = new JsonHttpApiRequestSource(new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri("https://s.alicdn.com/@xconfig/flasher_classic/manifest") });
 
@@ -73,7 +66,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
                 var resultJson = jsonColumnMapper.MapToCollection(apiJsonStr, jsonPathRoot);
 
-                Assert.True(!string.IsNullOrEmpty(resultJson.MapJsonStr));
+                Assert.True(resultJson.Any());
             }
         }
     }

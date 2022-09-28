@@ -74,13 +74,7 @@ IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
  using (var scope = serviceProvider.CreateScope())
  {
      IJsonDataProvider jsonDataProvider = scope.ServiceProvider.GetService<IJsonDataProvider>()!;
-     JsonPathRoot jsonPathRoot = new JsonPathRoot("$.pages", new List<DestinationJsonColumn>()
-     {
-         new DestinationJsonColumn{ Code ="PageName",Name ="页面名称" },
-         new DestinationJsonColumn{ Code ="PageUrl",Name ="页面地址" },
-         new DestinationJsonColumn{ Code ="PageNamespace",Name ="页面空间" },
-         new DestinationJsonColumn{ Code ="id",Name ="Id" },
-     });
+     JsonPathRoot jsonPathRoot = new JsonPathRoot("$.pages");
 
     jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageName", SourceJsonPath = "$.name", RootPath = jsonPathRoot.RootPath });
     jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation { DestinationJsonColumnCode = "PageUrl", SourceJsonPath = "$.url", RootPath = jsonPathRoot.RootPath });
@@ -96,11 +90,3 @@ IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
     var resultJson = jsonColumnMapper.MapToCollection(apiJsonStr, jsonPathRoot);
 }
 ```
-
-
-
-### 待做列表
-
-- [ ] 支持列类型的转换
-- [ ] 使用新的json字符串的提供者，内部使用JsonElement的ObjectEnumerator内置对象的Current的Name，来实现忽略大小写的功能
-- [x] 测试HttpApi TokenService 里面的各种Oauth2.0协议还有附属Token

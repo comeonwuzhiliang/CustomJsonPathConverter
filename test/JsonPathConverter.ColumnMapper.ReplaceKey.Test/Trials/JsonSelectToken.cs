@@ -1,11 +1,9 @@
-﻿using Xunit;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Diagnostics.Metrics;
+﻿using Newtonsoft.Json.Linq;
+using Xunit;
 
-namespace JsonPathConverter.ColumnMapper.ReplaceKey.Test
+namespace JsonPathConverter.ColumnMapper.ReplaceKey.Test.Trials
 {
-    public class JsonIntercept
+    public class JsonSelectToken
     {
         [Fact]
         public void NoLayerObject()
@@ -18,9 +16,9 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey.Test
 
             var token = jsonToken.SelectToken(root);
 
-            var name = token!.SelectToken("name")!.ToString();
+            var name = token!.SelectToken("name")?.ToString();
 
-            var age = token.SelectToken("age")!.ToString();
+            var age = token.SelectToken("age")?.ToString();
 
             Assert.Equal("zhangsan", name);
 

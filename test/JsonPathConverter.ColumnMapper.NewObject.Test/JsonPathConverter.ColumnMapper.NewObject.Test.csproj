@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\JsonPathConverter.ColumnMapper.NewObject\JsonPathConverter.ColumnMapper.NewObject.csproj" />
-    <ProjectReference Include="..\JsonPathConverter.Test.FakeObject\JsonPathConverter.Test.FakeObject.csproj" />
   </ItemGroup>
 
 </Project>
