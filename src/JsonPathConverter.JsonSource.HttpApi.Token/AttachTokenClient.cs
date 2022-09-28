@@ -20,7 +20,17 @@ namespace JsonPathConverter.JsonSource.HttpApi.Token
         public async Task<string> GetAccessTokenAsync(AttachTokenRequest? request, CancellationToken cancellationToken = default)
         {
             var attachAccessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            return await Task.FromResult(attachAccessToken);
+            _logger.LogInformation($"token:{attachAccessToken}");
+            try
+            {
+                var token = attachAccessToken[0].Replace("Bearer ", "");
+
+                return await Task.FromResult(token);
+            }
+            catch
+            {
+                return "";
+            }
         }
     }
 
