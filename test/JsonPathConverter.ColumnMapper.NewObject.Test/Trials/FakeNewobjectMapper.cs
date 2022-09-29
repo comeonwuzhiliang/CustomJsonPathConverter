@@ -1,6 +1,5 @@
 ﻿using JsonPathConverter.Abstractions;
 using JsonPathConverter.Newtonsoft.Helper;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 

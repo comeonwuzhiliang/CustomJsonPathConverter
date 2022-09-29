@@ -80,6 +80,10 @@ namespace JsonPathConverter.ColumnMapper.NewObject.Test
             var result = new ColumnMapperNewObject().MapToCollection(json, jsonPathRoot);
 
             Assert.Equal(2, result.Count());
+
+            var systemTestJson = System.Text.Json.JsonSerializer.Serialize(result);
+
+            Assert.NotNull(systemTestJson);
         }
     }
 }

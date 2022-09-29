@@ -55,7 +55,7 @@ namespace JsonPathConverter.HttpApi.Test
             JsonPathRoot jsonPathRoot = new JsonPathRoot("$");
             jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
 
-            var jsonMapper = new ColumnMapper.ReplaceKey.ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
+            var jsonMapper = new ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
             Assert.NotEmpty(jsonMapper);
         }
@@ -134,7 +134,7 @@ namespace JsonPathConverter.HttpApi.Test
             JsonPathRoot jsonPathRoot = new JsonPathRoot("$");
             jsonPathMapperRelations.ForEach(s => jsonPathRoot.AddJsonPathMapper(s));
 
-            var mapResult = new ColumnMapper.ReplaceKey.ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
+            var mapResult = new ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
             var destinationJsonStr = JsonConvert.SerializeObject(mapResult);
 

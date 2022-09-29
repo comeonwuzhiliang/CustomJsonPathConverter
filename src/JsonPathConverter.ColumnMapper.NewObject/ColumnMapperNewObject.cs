@@ -10,9 +10,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject
     {
         public IEnumerable<IDictionary<string, object?>> MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            JArray? jArray = new GenerateNewObject().MapArray(jsonSourceStr, jsonPathRoot);
-
-            return jArray?.ToObject<IEnumerable<IDictionary<string, object?>>>() ?? new List<IDictionary<string, object?>>();
+            return new GenerateNewObject().MapArray(jsonSourceStr, jsonPathRoot) ?? new List<IDictionary<string, object?>>();
         }
 
         public IDictionary<string, object?> MapToDic(string jsonSourceStr, JsonPathRoot jsonPathRoot)
@@ -24,18 +22,18 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                 return new Dictionary<string, object?>();
             }
 
-            if (obj is JObject)
+            if (obj is IDictionary<string, object?>)
             {
-                return (obj as JObject)?.ToObject<IDictionary<string, object?>>() ?? new Dictionary<string, object?>();
+                return (obj as IDictionary<string, object?>) ?? new Dictionary<string, object?>();
             }
 
-            if (obj is JArray)
+            if (obj is IEnumerable<IDictionary<string, object?>>)
             {
-                JArray? jArray = obj as JArray;
+                var list = obj as List<IDictionary<string, object?>>;
 
-                if (jArray?.Any() == true && jArray[0] != null)
+                if (list?.Any() == true && list[0] != null)
                 {
-                    return jArray[0].ToObject<IDictionary<string, object?>>() ?? new Dictionary<string, object?>();
+                    return list[0] ?? new Dictionary<string, object?>();
                 }
             }
 
