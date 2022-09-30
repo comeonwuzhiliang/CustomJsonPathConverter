@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -16,9 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Company\Code\jsonpathconverter\src\JsonPathConverter.JsonSource.HttpApi.Oauth\JsonPathConverter.JsonSource.HttpApi.Oauth.csproj" />
     <ProjectReference Include="..\JsonPathConverter.Abstractions\JsonPathConverter.Abstractions.csproj" />
     <ProjectReference Include="..\JsonPathConverter.JsonSource.HttpApi.Abstractions\JsonPathConverter.JsonSource.HttpApi.Abstractions.csproj" />
+    <ProjectReference Include="..\JsonPathConverter.JsonSource.HttpApi.Oatuh\JsonPathConverter.JsonSource.HttpApi.Oauth.csproj" />
   </ItemGroup>
 
 </Project>
