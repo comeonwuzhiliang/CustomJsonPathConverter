@@ -66,7 +66,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
                 var resultJson = jsonColumnMapper.MapToCollection(apiJsonStr, jsonPathRoot);
 
-                Assert.True(resultJson.Any());
+                Assert.True(resultJson?.Data?.Any());
             }
         }
     }

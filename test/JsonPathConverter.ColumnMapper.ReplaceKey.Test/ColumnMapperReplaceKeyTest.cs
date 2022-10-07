@@ -57,7 +57,7 @@ namespace JsonPathConverter.HttpApi.Test
 
             var jsonMapper = new ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
-            Assert.NotEmpty(jsonMapper);
+            Assert.NotEmpty(jsonMapper?.Data);
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace JsonPathConverter.HttpApi.Test
 
             var mapResult = new ColumnMapperReplaceKey().MapToCollection(userActionsJsonStr, jsonPathRoot);
 
-            var destinationJsonStr = JsonConvert.SerializeObject(mapResult);
+            var destinationJsonStr = JsonConvert.SerializeObject(mapResult.Data);
 
             JToken token = JToken.Parse(destinationJsonStr);
 
