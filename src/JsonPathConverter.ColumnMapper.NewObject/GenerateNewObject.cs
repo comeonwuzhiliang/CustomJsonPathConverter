@@ -6,49 +6,12 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 {
     internal class GenerateNewObject
     {
-        public object? Map(string jsonSourceStr, JsonPathRoot jsonPathRoot)
-        {
-            var relations = jsonPathRoot.JsonPathMapperRelations;
-
-            if (relations == null || relations.Count == 0)
-            {
-                return null;
-            }
-
-            var jToken = JToken.Parse(jsonSourceStr);
-            if (jToken == null)
-            {
-                return null;
-            }
-
-            if (!string.IsNullOrEmpty(jsonPathRoot.RootPath))
-            {
-                jToken = jToken.SelectToken(jsonPathRoot.RootPath);
-
-                if (jToken == null)
-                {
-                    return null;
-                }
-            }
-
-            JsonPathAdapter jsonPathAdapter = new JsonPathAdapter();
-
-            if (jToken.Type == JTokenType.Object)
-            {
-                return MapClass(jToken, jsonPathRoot.JsonPathMapperRelations, jsonPathAdapter);
-            }
-
-            if (jToken.Type == JTokenType.Array)
-            {
-                return MapArrary(jToken, jsonPathRoot.JsonPathMapperRelations, jsonPathAdapter);
-            }
-
-            return null;
-        }
-
-        private IDictionary<string, object?>? MapClass(JToken jToken, IEnumerable<JsonPathMapperRelation> relations, JsonPathAdapter jsonPathAdapter)
+        private MapperClass? MapClass(JToken jToken, IEnumerable<JsonPathMapperRelation> relations, JsonPathAdapter jsonPathAdapter)
         {
             Dictionary<string, object?> dicObj = new Dictionary<string, object?>();
+
+            JObject jObject = new JObject();
+
             foreach (var relation in relations)
             {
                 if (string.IsNullOrEmpty(relation.DestinationJsonColumnCode))
@@ -66,14 +29,23 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                     if (value == null)
                     {
                         dicObj[relation.DestinationJsonColumnCode] = null;
+
+                        jObject.Add(relation.DestinationJsonColumnCode, null);
+
                         continue;
                     }
 
                     if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Property)
                     {
-                        JValue jValue = (JValue)value;
+                        try
+                        {
+                            JValue jValue = (JValue)value;
 
-                        dicObj[relation.DestinationJsonColumnCode] = jValue.Value;
+                            dicObj[relation.DestinationJsonColumnCode] = jValue.Value;
+                        }
+                        catch { }
+
+                        jObject.Add(relation.DestinationJsonColumnCode, value);
 
                         continue;
                     }
@@ -81,6 +53,8 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                     if (relation.ChildRelations?.Any() == false)
                     {
                         dicObj[relation.DestinationJsonColumnCode] = null;
+
+                        jObject.Add(relation.DestinationJsonColumnCode, null);
                     }
 
                     if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Object)
@@ -100,38 +74,49 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                 }
             }
 
-            return dicObj;
+            return new MapperClass { Object = dicObj, JObject = jObject };
         }
 
-        private IEnumerable<IDictionary<string, object?>>? MapArrary(JToken jToken, IEnumerable<JsonPathMapperRelation> relations, JsonPathAdapter jsonPathAdapter)
+        private MapperArray? MapArrary(JToken jToken, IEnumerable<JsonPathMapperRelation> relations, JsonPathAdapter jsonPathAdapter)
         {
             List<IDictionary<string, object?>> list = new List<IDictionary<string, object?>>();
+
+            JArray jArray = new JArray();
 
             if (jToken.Type == JTokenType.Array)
             {
                 foreach (var jTokenItem in jToken)
                 {
-                    IDictionary<string, object?>? dic = MapClass(jTokenItem, relations, jsonPathAdapter);
+                    MapperClass? mapperClass = MapClass(jTokenItem, relations, jsonPathAdapter);
+
+                    IDictionary<string, object?>? dic = mapperClass?.Object;
+
+                    JObject? jObject = mapperClass?.JObject;
 
                     if (dic != null)
                     {
                         list.Add(dic);
                     }
+
+                    if (jObject != null)
+                    {
+                        jArray.Add(jObject);
+                    }
                 }
             }
             else if (jToken.Type == JTokenType.Object)
             {
-                IDictionary<string, object?>? dic = MapClass(jToken, relations, jsonPathAdapter);
+                IDictionary<string, object?>? dic = MapClass(jToken, relations, jsonPathAdapter)?.Object;
                 if (dic != null)
                 {
                     list.Add(dic);
                 }
             }
 
-            return list;
+            return new MapperArray { JArray = jArray, Array = list };
         }
 
-        public IEnumerable<IDictionary<string, object?>>? MapArray(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        public JsonMapperArray? MapArray(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
             var relations = jsonPathRoot.JsonPathMapperRelations;
 
@@ -156,9 +141,9 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                 }
             }
 
-            IEnumerable<IDictionary<string, object?>>? list = MapArrary(jToken, jsonPathRoot.JsonPathMapperRelations, new JsonPathAdapter());
+            var mapArray = MapArrary(jToken, jsonPathRoot.JsonPathMapperRelations, new JsonPathAdapter());
 
-            return list;
+            return new JsonMapperArray { Data = mapArray?.Array, Json = mapArray?.Array?.ToString() };
         }
     }
 }

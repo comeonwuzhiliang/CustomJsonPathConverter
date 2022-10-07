@@ -79,7 +79,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject.Test
 
             var result = new ColumnMapperNewObject().MapToCollection(json, jsonPathRoot);
 
-            Assert.Equal(2, result.Count());
+            Assert.Equal(2, result.Data?.Count());
 
             var systemTestJson = System.Text.Json.JsonSerializer.Serialize(result);
 
