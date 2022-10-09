@@ -60,12 +60,18 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                     if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Object)
                     {
                         var dic = MapClass(value, relation.ChildRelations!, jsonPathAdapter);
-                        dicObj[relation.DestinationJsonColumnCode] = dic;
+
+                        dicObj[relation.DestinationJsonColumnCode] = dic?.Object;
+
+                        jObject.Add(relation.DestinationJsonColumnCode, dic?.JObject);
                     }
                     else if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Array)
                     {
                         var array = MapArrary(value, relation.ChildRelations!, jsonPathAdapter);
-                        dicObj[relation.DestinationJsonColumnCode] = array;
+
+                        dicObj[relation.DestinationJsonColumnCode] = array?.Array;
+
+                        jObject.Add(relation.DestinationJsonColumnCode, array?.JArray);
                     }
                 }
                 catch
@@ -106,10 +112,19 @@ namespace JsonPathConverter.ColumnMapper.NewObject
             }
             else if (jToken.Type == JTokenType.Object)
             {
-                IDictionary<string, object?>? dic = MapClass(jToken, relations, jsonPathAdapter)?.Object;
+                MapperClass? mapperClass = MapClass(jToken, relations, jsonPathAdapter);
+                IDictionary<string, object?>? dic = mapperClass?.Object;
+
+                JObject? jObject = mapperClass?.JObject;
+
                 if (dic != null)
                 {
                     list.Add(dic);
+                }
+
+                if (jObject != null)
+                {
+                    jArray.Add(jObject);
                 }
             }
 
@@ -143,7 +158,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 
             var mapArray = MapArrary(jToken, jsonPathRoot.JsonPathMapperRelations, new JsonPathAdapter());
 
-            return new JsonMapperArray { Data = mapArray?.Array, Json = mapArray?.Array?.ToString() };
+            return new JsonMapperArray { Data = mapArray?.Array, Json = mapArray?.JArray?.ToString() };
         }
     }
 }
