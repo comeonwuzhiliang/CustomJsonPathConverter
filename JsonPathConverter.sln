@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D539AF33-375
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C05F7435-FB3B-4941-B804-0F00D2D709A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSoure.HttpApi", "src\JsonPathConverter.JsonSoure.HttpApi\JsonPathConverter.JsonSoure.HttpApi.csproj", "{CC05898E-35E9-4268-A1A8-C9CF061A56E7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.Abstractions", "src\JsonPathConverter.Abstractions\JsonPathConverter.Abstractions.csproj", "{81C6E9B8-C853-4651-9D16-ABC0DA32C8CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi.Test", "test\JsonPathConverter.JsonSource.HttpApi.Test\JsonPathConverter.JsonSource.HttpApi.Test.csproj", "{3841DDAE-F65B-4B4A-B69F-77A2D315B54C}"
@@ -29,16 +27,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.Newtonsof
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi.Oauth", "..\..\..\Company\Code\jsonpathconverter\src\JsonPathConverter.JsonSource.HttpApi.Oauth\JsonPathConverter.JsonSource.HttpApi.Oauth.csproj", "{585B26FE-B48C-424E-A272-4D68D17E4E04}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi", "..\..\..\Company\Code\jsonpathconverter\src\JsonPathConverter.JsonSoucre.HttpApi\JsonPathConverter.JsonSource.HttpApi.csproj", "{EFE64179-AAD5-4ED4-91BB-670071C8045E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CC05898E-35E9-4268-A1A8-C9CF061A56E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC05898E-35E9-4268-A1A8-C9CF061A56E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC05898E-35E9-4268-A1A8-C9CF061A56E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC05898E-35E9-4268-A1A8-C9CF061A56E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81C6E9B8-C853-4651-9D16-ABC0DA32C8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81C6E9B8-C853-4651-9D16-ABC0DA32C8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81C6E9B8-C853-4651-9D16-ABC0DA32C8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,12 +75,15 @@ Global
 		{585B26FE-B48C-424E-A272-4D68D17E4E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{585B26FE-B48C-424E-A272-4D68D17E4E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{585B26FE-B48C-424E-A272-4D68D17E4E04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFE64179-AAD5-4ED4-91BB-670071C8045E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE64179-AAD5-4ED4-91BB-670071C8045E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFE64179-AAD5-4ED4-91BB-670071C8045E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFE64179-AAD5-4ED4-91BB-670071C8045E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CC05898E-35E9-4268-A1A8-C9CF061A56E7} = {D539AF33-3750-4985-AF54-94DC434086BC}
 		{81C6E9B8-C853-4651-9D16-ABC0DA32C8CF} = {D539AF33-3750-4985-AF54-94DC434086BC}
 		{3841DDAE-F65B-4B4A-B69F-77A2D315B54C} = {C05F7435-FB3B-4941-B804-0F00D2D709A4}
 		{19B471E2-DE4F-4B03-8E7F-59021B19A695} = {D539AF33-3750-4985-AF54-94DC434086BC}
@@ -95,6 +94,7 @@ Global
 		{0B3F737B-82C2-4705-9B4D-1DA3B5FAEA66} = {D539AF33-3750-4985-AF54-94DC434086BC}
 		{DE857709-18B9-4F14-B305-AFDB05CDC98F} = {C05F7435-FB3B-4941-B804-0F00D2D709A4}
 		{585B26FE-B48C-424E-A272-4D68D17E4E04} = {D539AF33-3750-4985-AF54-94DC434086BC}
+		{EFE64179-AAD5-4ED4-91BB-670071C8045E} = {D539AF33-3750-4985-AF54-94DC434086BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FC65FB8-37D5-4D11-BD7E-C532587C97B7}
