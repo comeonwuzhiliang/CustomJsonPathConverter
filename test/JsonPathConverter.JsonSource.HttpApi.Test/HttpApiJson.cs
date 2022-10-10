@@ -2,7 +2,6 @@
 using JsonPathConverter.ColumnMapper.ReplaceKey;
 using JsonPathConverter.JsonSource.HttpApi.Abstractions;
 using JsonPathConverter.JsonSource.HttpApi.Oauth;
-using JsonPathConverter.JsonSoure.HttpApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit;

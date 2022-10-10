@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Company\Code\jsonpathconverter\src\JsonPathConverter.JsonSoucre.HttpApi\JsonPathConverter.JsonSource.HttpApi.csproj" />
     <ProjectReference Include="..\..\src\JsonPathConverter.ColumnMapper.NewObject\JsonPathConverter.ColumnMapper.NewObject.csproj" />
     <ProjectReference Include="..\..\src\JsonPathConverter.ColumnMapper.ReplaceKey\JsonPathConverter.ColumnMapper.ReplaceKey.csproj" />
-    <ProjectReference Include="..\..\src\JsonPathConverter.JsonSoure.HttpApi\JsonPathConverter.JsonSoure.HttpApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
