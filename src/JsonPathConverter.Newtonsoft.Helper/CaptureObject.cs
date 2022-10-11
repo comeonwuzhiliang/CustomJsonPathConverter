@@ -7,6 +7,20 @@ namespace JsonPathConverter.Newtonsoft.Helper
     {
         public TData? Capture<TData>(string jsonSourceStr, string path)
         {
+            if (path == "$")
+            {
+                if (typeof(TData) == typeof(Guid))
+                {
+                    var guid = Guid.Parse(jsonSourceStr);
+                    return (TData)Convert.ChangeType(guid, typeof(TData));
+                }
+
+                if (typeof(TData).IsAssignableTo(typeof(ValueType)) || typeof(TData) == typeof(string))
+                {
+                    return (TData)Convert.ChangeType(jsonSourceStr, typeof(TData));
+                }
+            }
+
             var jToken = JToken.Parse(jsonSourceStr);
 
             IEnumerable<JToken> jTokens;
