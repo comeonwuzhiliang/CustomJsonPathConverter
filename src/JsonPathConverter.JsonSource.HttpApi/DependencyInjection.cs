@@ -1,6 +1,6 @@
 ﻿using JsonPathConverter.Abstractions;
 using JsonPathConverter.JsonSource.HttpApi.Oauth;
-using JsonPathConverter.JsonSoure.HttpApi;
+using JsonPathConverter.JsonSource.HttpApi;
 using Polly;
 using System.Net;
 
