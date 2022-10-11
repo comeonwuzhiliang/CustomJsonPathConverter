@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.Newtonsof
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.Newtonsoft.Helper.Test", "test\JsonPathConverter.Newtonsoft.Helper.Test\JsonPathConverter.Newtonsoft.Helper.Test.csproj", "{DE857709-18B9-4F14-B305-AFDB05CDC98F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi.Oauth", "..\..\..\Company\Code\jsonpathconverter\src\JsonPathConverter.JsonSource.HttpApi.Oauth\JsonPathConverter.JsonSource.HttpApi.Oauth.csproj", "{585B26FE-B48C-424E-A272-4D68D17E4E04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi", "src\JsonPathConverter.JsonSource.HttpApi\JsonPathConverter.JsonSource.HttpApi.csproj", "{237714B1-A2CA-49FE-9832-12061B7BFA80}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi", "..\..\..\Company\Code\jsonpathconverter\src\JsonPathConverter.JsonSource.HttpApi\JsonPathConverter.JsonSource.HttpApi.csproj", "{B4E23498-2271-4DC7-A34D-24DB386D5DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathConverter.JsonSource.HttpApi.Oauth", "src\JsonPathConverter.JsonSource.HttpApi.Oauth\JsonPathConverter.JsonSource.HttpApi.Oauth.csproj", "{F54E76BD-FFE9-49E3-82CE-ABDA9B0B9786}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,14 +71,14 @@ Global
 		{DE857709-18B9-4F14-B305-AFDB05CDC98F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE857709-18B9-4F14-B305-AFDB05CDC98F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE857709-18B9-4F14-B305-AFDB05CDC98F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{585B26FE-B48C-424E-A272-4D68D17E4E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{585B26FE-B48C-424E-A272-4D68D17E4E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{585B26FE-B48C-424E-A272-4D68D17E4E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{585B26FE-B48C-424E-A272-4D68D17E4E04}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4E23498-2271-4DC7-A34D-24DB386D5DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4E23498-2271-4DC7-A34D-24DB386D5DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4E23498-2271-4DC7-A34D-24DB386D5DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4E23498-2271-4DC7-A34D-24DB386D5DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{237714B1-A2CA-49FE-9832-12061B7BFA80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{237714B1-A2CA-49FE-9832-12061B7BFA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{237714B1-A2CA-49FE-9832-12061B7BFA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{237714B1-A2CA-49FE-9832-12061B7BFA80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F54E76BD-FFE9-49E3-82CE-ABDA9B0B9786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F54E76BD-FFE9-49E3-82CE-ABDA9B0B9786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F54E76BD-FFE9-49E3-82CE-ABDA9B0B9786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F54E76BD-FFE9-49E3-82CE-ABDA9B0B9786}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,8 +93,8 @@ Global
 		{A6FF04A9-E596-4ECD-9DF4-F85C46C6AE94} = {D539AF33-3750-4985-AF54-94DC434086BC}
 		{0B3F737B-82C2-4705-9B4D-1DA3B5FAEA66} = {D539AF33-3750-4985-AF54-94DC434086BC}
 		{DE857709-18B9-4F14-B305-AFDB05CDC98F} = {C05F7435-FB3B-4941-B804-0F00D2D709A4}
-		{585B26FE-B48C-424E-A272-4D68D17E4E04} = {D539AF33-3750-4985-AF54-94DC434086BC}
-		{B4E23498-2271-4DC7-A34D-24DB386D5DF6} = {D539AF33-3750-4985-AF54-94DC434086BC}
+		{237714B1-A2CA-49FE-9832-12061B7BFA80} = {D539AF33-3750-4985-AF54-94DC434086BC}
+		{F54E76BD-FFE9-49E3-82CE-ABDA9B0B9786} = {D539AF33-3750-4985-AF54-94DC434086BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FC65FB8-37D5-4D11-BD7E-C532587C97B7}
