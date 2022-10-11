@@ -1,5 +1,6 @@
 ﻿using JsonPathConverter.Abstractions;
 using JsonPathConverter.JsonSource.HttpApi.Abstractions;
+using JsonPathConverter.JsonSource.HttpApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
