@@ -25,21 +25,30 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 
                 try
                 {
-                    var value = jToken.SelectToken(jsonPathAdapterResult);
-                    if (value == null)
+                    JToken? value = null;
+                    IEnumerable<JToken>? values = null;
+                    try
                     {
-                        dicObj[relation.DestinationJsonColumnCode] = null;
+                        value = jToken.SelectToken(jsonPathAdapterResult);
+                        if (value == null)
+                        {
+                            dicObj[relation.DestinationJsonColumnCode] = null;
 
-                        jObject.Add(relation.DestinationJsonColumnCode, null);
+                            jObject.Add(relation.DestinationJsonColumnCode, null);
 
-                        continue;
+                            continue;
+                        }
+                    }
+                    catch
+                    {
+                        values = jToken.SelectTokens(jsonPathAdapterResult);
                     }
 
                     if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Property)
                     {
                         try
                         {
-                            JValue jValue = (JValue)value;
+                            JValue jValue = (JValue)value!;
 
                             dicObj[relation.DestinationJsonColumnCode] = jValue.Value;
                         }
@@ -50,28 +59,52 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                         continue;
                     }
 
-                    if (relation.ChildRelations?.Any() == false)
+                    if (relation.ChildRelations == null || relation.ChildRelations.Any() == false)
                     {
-                        dicObj[relation.DestinationJsonColumnCode] = null;
+                        if (relation.DestinationPropertyType != DestinationPropertyTypeEnum.Array)
+                        {
+                            dicObj[relation.DestinationJsonColumnCode] = null;
 
-                        jObject.Add(relation.DestinationJsonColumnCode, null);
+                            jObject.Add(relation.DestinationJsonColumnCode, null);
+                        }
+                        else
+                        {
+                            JArray jArray = new JArray();
+                            List<object?> list = new List<object?>();
+                            foreach (var item in values ?? value!)
+                            {
+                                jArray.Add(item);
+                                try
+                                {
+                                    JValue jValue = (JValue)item;
+
+                                    list.Add(jValue.Value);
+                                }
+                                catch { }
+                            }
+
+                            jObject.Add(relation.DestinationJsonColumnCode, jArray);
+                            dicObj[relation.DestinationJsonColumnCode] = list;
+                        }
                     }
-
-                    if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Object)
+                    else
                     {
-                        var dic = MapClass(value, relation.ChildRelations!, jsonPathAdapter);
+                        if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Object)
+                        {
+                            var dic = MapClass(value!, relation.ChildRelations!, jsonPathAdapter);
 
-                        dicObj[relation.DestinationJsonColumnCode] = dic?.Object;
+                            dicObj[relation.DestinationJsonColumnCode] = dic?.Object;
 
-                        jObject.Add(relation.DestinationJsonColumnCode, dic?.JObject);
-                    }
-                    else if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Array)
-                    {
-                        var array = MapArrary(value, relation.ChildRelations!, jsonPathAdapter);
+                            jObject.Add(relation.DestinationJsonColumnCode, dic?.JObject);
+                        }
+                        else if (relation.DestinationPropertyType == DestinationPropertyTypeEnum.Array)
+                        {
+                            var array = MapArrary(value!, relation.ChildRelations!, jsonPathAdapter);
 
-                        dicObj[relation.DestinationJsonColumnCode] = array?.Array;
+                            dicObj[relation.DestinationJsonColumnCode] = array?.Array;
 
-                        jObject.Add(relation.DestinationJsonColumnCode, array?.JArray);
+                            jObject.Add(relation.DestinationJsonColumnCode, array?.JArray);
+                        }
                     }
                 }
                 catch
@@ -131,20 +164,16 @@ namespace JsonPathConverter.ColumnMapper.NewObject
             return new MapperArray { JArray = jArray, Array = list };
         }
 
-        public JsonMapperArray? MapArray(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        internal JsonMapperArray? MapArray(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
             var relations = jsonPathRoot.JsonPathMapperRelations;
 
-            if (relations == null || relations.Count == 0)
+            if (relations.Count == 0)
             {
                 return null;
             }
 
             var jToken = JToken.Parse(jsonSourceStr);
-            if (jToken == null)
-            {
-                return null;
-            }
 
             if (!string.IsNullOrEmpty(jsonPathRoot.RootPath))
             {
@@ -159,6 +188,32 @@ namespace JsonPathConverter.ColumnMapper.NewObject
             var mapArray = MapArrary(jToken, jsonPathRoot.JsonPathMapperRelations, new JsonPathAdapter());
 
             return new JsonMapperArray { Data = mapArray?.Array, Json = mapArray?.JArray?.ToString() };
+        }
+
+        internal JsonMapperObject? MapperObject(string jsonSourceStr, JsonPathRoot jsonPathRoot)
+        {
+            var relations = jsonPathRoot.JsonPathMapperRelations;
+
+            if (relations.Count == 0)
+            {
+                return null;
+            }
+
+            var jToken = JToken.Parse(jsonSourceStr);
+
+            if (!string.IsNullOrEmpty(jsonPathRoot.RootPath))
+            {
+                jToken = jToken.SelectToken(jsonPathRoot.RootPath);
+
+                if (jToken == null)
+                {
+                    return null;
+                }
+            }
+
+            var mapObject = MapClass(jToken, jsonPathRoot.JsonPathMapperRelations, new JsonPathAdapter());
+
+            return new JsonMapperObject { Data = mapObject?.Object, Json = mapObject?.JObject?.ToString() };
         }
     }
 }

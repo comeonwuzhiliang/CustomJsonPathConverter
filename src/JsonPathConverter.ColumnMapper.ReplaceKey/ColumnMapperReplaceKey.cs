@@ -12,7 +12,13 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
         {
             var map = MapToStr<IEnumerable<IDictionary<string, object?>>>(jsonSourceStr, jsonPathRoot);
 
-            return new JsonMapperArray { Data = map.MapData ?? new List<IDictionary<string, object?>>(), Json = map.MapJsonStr };
+            return new JsonMapperArray
+                { Data = map.MapData ?? new List<IDictionary<string, object?>>(), Json = map.MapJsonStr };
+        }
+
+        public JsonMapperObject MapToObjectByTemplate(string jsonTemplate, string jsonSourceStr)
+        {
+            throw new Exception("not support");
         }
 
         public TData? CaptureObject<TData>(string jsonSourceStr, string path)
@@ -29,6 +35,7 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
             {
                 return result;
             }
+
             var jToken = JToken.Parse(jsonSourceStr);
             if (jToken == null)
             {
@@ -41,8 +48,8 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                 {
                     jToken = jToken.SelectToken(jsonPathRoot.RootPath);
                     if (jToken != null && jToken.Type != JTokenType.Array
-                        && typeof(TData).IsGenericType
-                        && typeof(TData).IsAssignableTo(typeof(IEnumerable)))
+                                       && typeof(TData).IsGenericType
+                                       && typeof(TData).IsAssignableTo(typeof(IEnumerable)))
                     {
                         result = new JsonMapResult<TData>((str) =>
                         {
@@ -82,6 +89,7 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                     });
                     continue;
                 }
+
                 foreach (var token in matchJsonToekns)
                 {
                     var jProperty = token.Parent;
@@ -89,6 +97,7 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                     {
                         continue;
                     }
+
                     if (jProperty.Type != JTokenType.Property)
                     {
                         result.PropertyInfos.Add(new JsonMapInfo
@@ -99,10 +108,12 @@ namespace JsonPathConverter.ColumnMapper.ReplaceKey
                         });
                         continue;
                     }
+
                     var newProperty = new JProperty(relation.DestinationJsonColumnCode ?? string.Empty, token);
                     jProperty.Replace(newProperty);
                 }
             }
+
             result.MapJsonStr = jToken.ToString();
             return result;
         }
