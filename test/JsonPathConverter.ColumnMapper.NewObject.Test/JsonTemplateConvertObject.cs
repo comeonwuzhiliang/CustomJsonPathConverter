@@ -1,4 +1,4 @@
-﻿using Xunit;
+﻿﻿using Xunit;
 
 namespace JsonPathConverter.ColumnMapper.NewObject.Test
 {
@@ -7,7 +7,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject.Test
         [Fact]
         public void JsonTemplate()
         {
-            string jsonTemplate = "{\"name\":\"$.name\",\"createDataRange\":{\"start\":\"$.startCreateData\",\"end\":\"$.endCreateData\"},\"hyperLinkContext\":\"$.hyperLink.context\",\"hyperLinkUrl\":\"$.hyperLink.url\",\"departments\":[{\"id\":\"$.department.id\",\"name\":\"$.department.name\"}],\"leaders\":[\"$.leaders.name\"],\"role\":{\"id\":\"$.roles[0].id\",\"name\":\"$.roles[0].name\"},\"phone1\":\"$.phone[0]\",\"phone2\":\"$.phone[1]\",\"suggests\":[\"$.define.suggest.message\"],\"suggest1\":\"$.define.suggest.message[0]\",\"suggest2\":\"$.define.suggest.message[1]\",\"suggest3\":\"$.define.suggest.message[2]\"}";
+            string jsonTemplate = "{\"id\":\"Guid\",\"name\":\"$.name\",\"createDataRange\":{\"start\":\"$.startCreateData\",\"end\":\"$.endCreateData\"},\"hyperLinkContext\":\"$.hyperLink.context\",\"hyperLinkUrl\":\"$.hyperLink.url\",\"departments\":[{\"id\":\"$.department.id\",\"name\":\"$.department.name\"}],\"leaders\":[\"$.leaders.name\"],\"role\":{\"id\":\"$.roles[0].id\",\"name\":\"$.roles[0].name\"},\"phone1\":\"$.phone[0]\",\"phone2\":\"$.phone[1]\",\"suggests\":[\"$.define.suggest.message\"],\"suggest1\":\"$.define.suggest.message[0]\",\"suggest2\":\"$.define.suggest.message[1]\",\"suggest3\":\"$.define.suggest.message[2]\"}";
 
             string jsonSource = "{\"name\":\"azir\",\"startCreateData\":\"2022-10-13 00:00:00\",\"endCreateData\":\"2022-10-14 00:00:00\",\"hyperLink\":{\"context\":\"百度一下\",\"url\":\"https://www.baidu.com\"},\"department\":{\"id\":\"111\",\"name\":\"研发部\"},\"leaders\":[{\"name\":\"azirliang\"},{\"name\":\"azir\"}],\"roles\":[{\"id\":\"2222\",\"name\":\"role2222\"}],\"phone\":[\"10086\",\"10010\",\"10001\"],\"define\":{\"suggest\":{\"message\":[\"aaa\",\"bbb\"]}}}";
 
