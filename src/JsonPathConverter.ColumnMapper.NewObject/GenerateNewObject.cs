@@ -21,6 +21,17 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 
                 string jsonPath = relation.SourceJsonPath ?? string.Empty;
 
+                if (string.Compare("guid", jsonPath, true) == 0)
+                {
+                    Guid guid = Guid.NewGuid();
+
+                    dicObj[relation.DestinationJsonColumnCode] = guid;
+
+                    jObject.Add(relation.DestinationJsonColumnCode, guid);
+
+                    continue;
+                }
+
                 string jsonPathAdapterResult = jsonPathAdapter.Adapter(jsonPath, jToken);
 
                 try
