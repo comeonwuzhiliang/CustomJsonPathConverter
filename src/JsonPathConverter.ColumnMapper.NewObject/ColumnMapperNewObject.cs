@@ -5,9 +5,15 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 {
     public class ColumnMapperNewObject : IJsonColumnMapper
     {
+        private readonly IEnumerable<JsonPropertyFormatFunction>? _jsonPropertyFormatFunctions;
+        public ColumnMapperNewObject(IEnumerable<JsonPropertyFormatFunction>? jsonPropertyFormatFunctions = null)
+        {
+            _jsonPropertyFormatFunctions = jsonPropertyFormatFunctions;
+        }
+
         public JsonMapperArray MapToCollection(string jsonSourceStr, JsonPathRoot jsonPathRoot)
         {
-            return new GenerateNewObject().MapArray(jsonSourceStr, jsonPathRoot) ?? new JsonMapperArray { };
+            return new GenerateNewObject(_jsonPropertyFormatFunctions).MapArray(jsonSourceStr, jsonPathRoot) ?? new JsonMapperArray { };
         }
 
         public JsonMapperObject MapToObjectByTemplate(string jsonTemplate, string jsonSourceStr)
@@ -28,7 +34,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                 jsonPathRoot.AddJsonPathMapper(relation);
             }
 
-            return new GenerateNewObject().MapperObject(jsonSourceStr, jsonPathRoot) ?? new JsonMapperObject { };
+            return new GenerateNewObject(_jsonPropertyFormatFunctions).MapperObject(jsonSourceStr, jsonPathRoot) ?? new JsonMapperObject { };
         }
 
         public TData? CaptureObject<TData>(string jsonSourceStr, string path)
