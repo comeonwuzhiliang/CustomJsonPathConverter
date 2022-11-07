@@ -1,11 +1,18 @@
 ﻿using JsonPathConverter.Abstractions;
 using JsonPathConverter.Newtonsoft.Helper;
 using Newtonsoft.Json.Linq;
+using System.Reflection.PortableExecutable;
 
 namespace JsonPathConverter.ColumnMapper.NewObject
 {
     internal class GenerateNewObject
     {
+        private readonly IEnumerable<JsonPropertyFormatFunction>? _jsonPropertyFormatFunctions;
+        public GenerateNewObject(IEnumerable<JsonPropertyFormatFunction>? jsonPropertyFormatFunctions = null)
+        {
+            _jsonPropertyFormatFunctions = jsonPropertyFormatFunctions;
+        }
+
         private MapperClass? MapClass(JToken jToken, IEnumerable<JsonPathMapperRelation> relations, JsonPathAdapter jsonPathAdapter)
         {
             Dictionary<string, object?> dicObj = new Dictionary<string, object?>();
@@ -21,13 +28,17 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 
                 string jsonPath = relation.SourceJsonPath ?? string.Empty;
 
-                if (string.Compare("guid", jsonPath, true) == 0)
+                var jsonPropertyFormatFunction = _jsonPropertyFormatFunctions?.FirstOrDefault(s => s.FormatKey?.ToLower() == jsonPath?.ToLower());
+
+                if (jsonPropertyFormatFunction != null && jsonPropertyFormatFunction.FormatFunction != null)
                 {
-                    Guid guid = Guid.NewGuid();
+                    object jsonPropertyValue = jsonPropertyFormatFunction.FormatFunction();
 
-                    dicObj[relation.DestinationJsonColumnCode] = guid;
+                    dicObj[relation.DestinationJsonColumnCode] = jsonPropertyValue;
 
-                    jObject.Add(relation.DestinationJsonColumnCode, guid);
+                    var formatJToken = JToken.FromObject(jsonPropertyValue);
+
+                    jObject.Add(relation.DestinationJsonColumnCode, formatJToken);
 
                     continue;
                 }
