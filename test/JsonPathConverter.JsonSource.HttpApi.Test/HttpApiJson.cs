@@ -1,5 +1,5 @@
 ﻿using JsonPathConverter.Abstractions;
-using JsonPathConverter.ColumnMapper.ReplaceKey;
+using JsonPathConverter.ColumnMapper.NewObject;
 using JsonPathConverter.JsonSource.HttpApi.Abstractions;
 using JsonPathConverter.JsonSource.HttpApi.Oauth;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +17,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
             serviceCollection.AddHttpApiJsonDataProviderWithToken(s => s.GrantType = "client_credentials");
 
-            serviceCollection.AddColumnMapperReplaceKey();
+            serviceCollection.AddColumnMapperNewObject();
 
             serviceCollection.AddLogging();
 
@@ -30,7 +30,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
                 var tokenOptions = scope.ServiceProvider.GetService<IOptions<TokenClientOptions>>();
 
-                Assert.True(scope.ServiceProvider.GetService<IJsonColumnMapper>()!.GetType() == typeof(ColumnMapperReplaceKey));
+                Assert.True(scope.ServiceProvider.GetService<IJsonColumnMapper>()!.GetType() == typeof(ColumnMapperNewObject));
                 Assert.True(scope.ServiceProvider.GetService<IJsonDataProvider>()!.GetType() == typeof(HttpApiJsonDataProvider));
             }
         }
@@ -42,7 +42,7 @@ namespace JsonPathConverter.JsonSource.HttpApi.Test
 
             serviceCollection.AddHttpApiJsonDataProvider();
 
-            serviceCollection.AddColumnMapperReplaceKey();
+            serviceCollection.AddColumnMapperNewObject();
 
             serviceCollection.AddLogging();
 

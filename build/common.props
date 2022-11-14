@@ -1,0 +1,8 @@
+<Project>
+	<Import Project="version.props" />
+	<PropertyGroup>
+		<Authors>LowCode2.0 Team</Authors>
+		<Product>JsonPathConverter</Product>
+		<owners>LowCode2.0</owners>
+	</PropertyGroup>
+</Project>

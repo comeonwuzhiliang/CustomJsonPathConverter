@@ -21,5 +21,29 @@
         /// 来源的Json Path
         /// </summary>
         public string? SourceJsonPath { get; set; }
+
+        ///// <summary>
+        ///// 父节点
+        ///// </summary>
+        //public JsonPathMapperRelation? Parent { get; private set; }
+
+        ///// <summary>
+        ///// 设置父节点
+        ///// TODO:使用<seealso cref="INotifyPropertyChanged">和<seealso cref="INotifyCollectionChanged"/>
+        ///// </summary>
+        //internal void SetParent()
+        //{
+        //    if (ChildRelations != null)
+
+        //        foreach (var item in ChildRelations)
+        //        {
+        //            item.Parent = this;
+        //            if (item.ChildRelations != null)
+        //                foreach (var item2 in item.ChildRelations)
+        //                {
+        //                    item2.SetParent();
+        //                }
+        //        }
+        //}
     }
 }
