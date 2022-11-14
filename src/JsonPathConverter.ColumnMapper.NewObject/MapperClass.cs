@@ -7,5 +7,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject
         public IDictionary<string, object?>? Object { get; set; }
 
         public JObject? JObject { get; set; }
+
+        public MapperArray? Array { get; set; }
     }
 }

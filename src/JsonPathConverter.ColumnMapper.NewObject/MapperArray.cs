@@ -4,8 +4,14 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 {
     internal class MapperArray
     {
-        public IEnumerable<IDictionary<string, object?>>? Array { get; set; }
+        public List<IDictionary<string, object?>>? Array { get; set; } = null;
 
-        public JArray? JArray { get; set; }
+        public JArray? JArray { get; set; } = null;
+
+        public void Init()
+        {
+            JArray ??= new JArray();
+            Array ??= new List<IDictionary<string, object?>>();
+        }
     }
 }
