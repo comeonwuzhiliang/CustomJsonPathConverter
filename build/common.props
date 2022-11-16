@@ -4,5 +4,7 @@
 		<Authors>LowCode2.0 Team</Authors>
 		<Product>JsonPathConverter</Product>
 		<owners>LowCode2.0</owners>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://git.in-road.com/lowcode/jsonpathconverter/</RepositoryUrl>
 	</PropertyGroup>
 </Project>
