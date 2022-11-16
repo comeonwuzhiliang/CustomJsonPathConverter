@@ -1,10 +1,10 @@
 <Project>
 	<Import Project="version.props" />
 	<PropertyGroup>
-		<Authors>LowCode2.0 Team</Authors>
+		<Authors>Azir</Authors>
 		<Product>JsonPathConverter</Product>
-		<owners>LowCode2.0</owners>
+		<owners>Azir</owners>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://git.in-road.com/lowcode/jsonpathconverter/</RepositoryUrl>
+		<RepositoryUrl>https://github.com/comeonwuzhiliang/CustomJsonPathConverter/</RepositoryUrl>
 	</PropertyGroup>
 </Project>
