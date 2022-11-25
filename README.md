@@ -1,21 +1,12 @@
 ### 介绍
 
-为了实现json字符串的映射，该库提供了两种json path 转换方式，一种是替换key，一种是生成新的数据结构的对象。
-
-### DLL
+为了实现两个json字符串之间的映射，该库会根据关系信息生成新的对象或者集合，也集成了访问三方Api的底层拦截器，帮忙实现自动授权。
 
 #### 接口层
 
 ##### JsonPathConverter.Abstractions
 
-重点接口：
-
-1. IJsonColumnMapper：Json列转换器
-2. IJsonDataProvider：Json数据来源提供者
-
 #####  JsonPathConverter.JsonSource.HttpApi.Abstractions
-
-HttpApi 抽象类
 
 
 
@@ -24,10 +15,6 @@ HttpApi 抽象类
 ##### JsonPathConverter.ColumnMapper.NewObject
 
 json列转换器，主要是实现生成新的json数据的功能。
-
-##### JsonPathConverter.ColumnMapper.ReplaceKey
-
-json列转换器，主要是实现生成替换key值的功能。
 
 ##### JsonPathConverter.JsonSoure.HttpApi
 
@@ -61,8 +48,6 @@ serviceCollection.AddHttpApiJsonDataProviderWithToken(Configuration.GetSelection
 // 或者无需Token的项目
 serviceCollection.AddHttpApiJsonDataProvider();
 
-serviceCollection.AddColumnMapperReplaceKey();
-// 或者
 serviceCollection.AddColumnMapperNewObject();
 ```
 
@@ -88,5 +73,156 @@ IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
     IJsonColumnMapper jsonColumnMapper = scope.ServiceProvider.GetService<IJsonColumnMapper>()!;
 
     var resultJson = jsonColumnMapper.MapToCollection(apiJsonStr, jsonPathRoot);
+}
+```
+
+### Json匹配学习
+
+#### 自定义转换
+
+``` C#
+services.AddSingleton(new JsonPropertyFormatFunction
+{
+     FormatKey = "guid",
+     FormatFunction = () => Guid.NewGuid()
+});
+```
+
+
+
+#### 数据来源
+
+```JSON
+{
+        "name": "azir",
+        "startCreateData": "2022-10-13 00:00:00",
+        "endCreateData": "2022-10-14 00:00:00",
+        "hyperLink": {
+                "context": "百度一下",
+                "url": "https://www.baidu.com"
+        },
+        "department": {
+                "id": "111",
+                "name": "研发部"
+        },
+        "leaders": [{
+                "name": "azirliang"
+        }, {
+                "name": "azir"
+        }],
+        "roles": [{
+                "id": "2222",
+                "name": "role2222"
+        }],
+        "phone": ["10086", "10010", "10001"],
+        "tel": ["111", "112", "113", "114"],
+        "define": {
+                "suggest": {
+                        "message": ["aaa", "bbb"]
+                }
+        }
+}
+```
+
+#### 配置
+
+```JSON
+{
+        "contacts": [{
+                "phone": "$.phone",
+                "tel": "$.tel"
+        }],
+        "id": "Guid",
+        "name": "$.name",
+        "createDataRange": {
+                "start": "$.startCreateData",
+                "end": "$.endCreateData"
+        },
+        "hyperLinkContext": "$.hyperLink.context",
+        "hyperLinkUrl": "$.hyperLink.url",
+        "departments": [{
+                "id": "$.department.id",
+                "name": "$.department.name"
+        }],
+        "leaders": ["$.leaders.name"],
+        "leaderNames": [{
+                "name": "$.leaders.name",
+                "remark": "leader"
+        }],
+        "role": {
+                "id": "$.roles[0].id",
+                "name": "$.roles[0].name"
+        },
+        "phone1": "$.phone[0]",
+        "phone2": "$.phone[1]",
+        "suggests": ["$.define.suggest.message"],
+        "suggest1": "$.define.suggest.message[0]",
+        "suggest2": "$.define.suggest.message[1]",
+        "suggest3": "$.define.suggest.message[2]"
+}
+```
+
+#### 映射结果
+
+```JSON
+{
+  "contacts": [
+    {
+      "phone": "10086",
+      "tel": "111"
+    },
+    {
+      "phone": "10010",
+      "tel": "112"
+    },
+    {
+      "phone": "10001",
+      "tel": "113"
+    },
+    {
+      "tel": "114"
+    }
+  ],
+  "id": "9144b149-3769-4156-b3cc-89252b63a465",
+  "name": "azir",
+  "createDataRange": {
+    "start": "2022-10-13 00:00:00",
+    "end": "2022-10-14 00:00:00"
+  },
+  "hyperLinkContext": "百度一下",
+  "hyperLinkUrl": "https://www.baidu.com",
+  "departments": [
+    {
+      "id": "111",
+      "name": "研发部"
+    }
+  ],
+  "leaders": [
+    "azirliang",
+    "azir"
+  ],
+  "leaderNames": [
+    {
+      "name": "azirliang",
+      "remark": "leader"
+    },
+    {
+      "name": "azir",
+      "remark": "leader"
+    }
+  ],
+  "role": {
+    "id": "2222",
+    "name": "role2222"
+  },
+  "phone1": "10086",
+  "phone2": "10010",
+  "suggests": [
+    "aaa",
+    "bbb"
+  ],
+  "suggest1": "aaa",
+  "suggest2": "bbb",
+  "suggest3": null
 }
 ```
