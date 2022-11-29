@@ -37,6 +37,27 @@ namespace JsonPathConverter.ColumnMapper.NewObject
             return new GenerateNewObject(_jsonPropertyFormatFunctions).MapperObject(jsonSourceStr, jsonPathRoot) ?? new JsonMapperObject { };
         }
 
+        public JsonMapperArray MapToCollectionByTemplate(string jsonTemplate, string jsonSourceStr)
+        {
+            JsonPathRoot jsonPathRoot = new JsonPathRoot("$");
+
+            JsonTemplateConvertRelation jsonTemplateConvertRelation = new JsonTemplateConvertRelation();
+
+            var relations = jsonTemplateConvertRelation.ConvertRelations(jsonTemplate);
+
+            if (relations == null || relations.Any() == false)
+            {
+                return new JsonMapperArray() { };
+            }
+
+            foreach (var relation in relations)
+            {
+                jsonPathRoot.AddJsonPathMapper(relation);
+            }
+
+            return new GenerateNewObject(_jsonPropertyFormatFunctions).MapArray(jsonSourceStr, jsonPathRoot) ?? new JsonMapperArray { };
+        }
+
         public TData? CaptureObject<TData>(string jsonSourceStr, string path)
         {
             return new CaptureObject().Capture<TData>(jsonSourceStr, path);
