@@ -96,7 +96,7 @@ namespace JsonPathConverter.ColumnMapper.NewObject.Test
                 DestinationJsonColumnCode = "chu_li_ren",
                 DestinationPropertyType = DestinationPropertyTypeEnum.Array,
                 SourceJsonPath = "$.chu_li_ren",
-                ChildRelations = new List<JsonPathMapperRelation> {
+                ChildRelations = new List<JsonPathMapperRelation> { 
                     new JsonPathMapperRelation { DestinationJsonColumnCode = "id", SourceJsonPath = "$.c_id" },
                     new JsonPathMapperRelation { DestinationJsonColumnCode = "name", SourceJsonPath = "$.name" }
                 }

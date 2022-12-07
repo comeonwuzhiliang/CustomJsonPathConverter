@@ -15,7 +15,7 @@ namespace JsonPathConverter.JsonSource.HttpApi
 
         public Uri CreateUri(string uriString)
         {
-            ArgumentNullException.ThrowIfNull(uriString, nameof(uriString));
+            ArgumentException.ThrowIfNullOrEmpty(uriString, nameof(uriString));
 
             Uri uri;
 

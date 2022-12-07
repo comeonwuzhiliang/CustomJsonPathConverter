@@ -2,7 +2,7 @@
 	<Import Project="..\..\build\common.props" />
 	<PropertyGroup>
 		<Description>$(Product) Abstractions .</Description>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
