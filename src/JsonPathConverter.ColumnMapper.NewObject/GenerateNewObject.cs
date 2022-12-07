@@ -165,7 +165,14 @@ namespace JsonPathConverter.ColumnMapper.NewObject
 
                             if (values == null && value != null)
                             {
-                                values = new List<JToken>() { value };
+                                if (value.Type == JTokenType.Array)
+                                {
+                                    values = value;
+                                }
+                                else
+                                {
+                                    values = new List<JToken>() { value };
+                                }
                             }
 
                             foreach (var item in values ?? new List<JToken>())
