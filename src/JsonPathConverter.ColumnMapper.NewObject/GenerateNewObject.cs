@@ -162,7 +162,13 @@ namespace JsonPathConverter.ColumnMapper.NewObject
                         {
                             JArray jArray = new JArray();
                             List<object?> list = new List<object?>();
-                            foreach (var item in values ?? value!)
+
+                            if (values == null && value != null)
+                            {
+                                values = new List<JToken>() { value };
+                            }
+
+                            foreach (var item in values ?? new List<JToken>())
                             {
                                 jArray.Add(item);
                                 try
