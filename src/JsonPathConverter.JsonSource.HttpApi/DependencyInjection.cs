@@ -3,6 +3,7 @@ using JsonPathConverter.JsonSource.HttpApi.Oauth;
 using JsonPathConverter.JsonSource.HttpApi;
 using Polly;
 using System.Net;
+using JsonPathConverter.JsonSource.HttpApi.Abstractions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -64,6 +65,12 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             serviceCollection.AddHttpApiClientWithToken(tokenClientOptions);
             serviceCollection.AddSingleton<IJsonDataProvider, HttpApiJsonDataProvider>();
+            return serviceCollection;
+        }
+
+        public static IServiceCollection AddUriCreation(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton<IUriCreation, UriCreation>();
             return serviceCollection;
         }
     }

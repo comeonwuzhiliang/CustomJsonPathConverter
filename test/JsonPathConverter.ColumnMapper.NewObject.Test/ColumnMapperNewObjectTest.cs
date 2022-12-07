@@ -85,5 +85,40 @@ namespace JsonPathConverter.ColumnMapper.NewObject.Test
 
             Assert.NotNull(systemTestJson);
         }
+
+        [Fact]
+        public void Collection()
+        {
+            string json = "{\"apiVersion\":\"2020123101\",\"sendtime\":\"2022-12-06 22:57:22 036\",\"backtime\":\"2022-12-06 22:57:22 050\",\"status\":1,\"url\":\"\",\"debuginfo\":\"\",\"error\":{\"code\":0,\"message\":\"\",\"showMessage\":\"\",\"controls\":null},\"data\":{\"message\":\"操作成功。\",\"totalItems\":0,\"startIndex\":0,\"itemsPerPage\":0,\"items\":[{\"c_id\":\"9b596bf7-3b90-49df-96f6-596ec9d7791b\",\"piao_zheng_lei_xing\":[{\"label\":\"X2许可证\",\"value\":\"ba7b52cb-2032-4dc3-8191-6ab5a4408e32\",\"defineType\":11}],\"zuo_ye_piao_ming_cheng\":\"wuzhiliangTest\",\"zuo_ye_piao_zhuang_tai\":\"待开票\",\"piao_hao\":[{\"label\":\"99-NAR-2022-1206-008\",\"value\":\"/vweb/#/WorkingBill/SafeOperationMgmt?id=9b596bf7-3b90-49df-96f6-596ec9d7791b&isTrouble=trouble\",\"defineType\":20}],\"zuo_ye_fu_zhai_ren\":[],\"chu_li_ren\":[{\"c_id\":\"20e4b904-300c-4b04-99c3-93a9ac68e048\",\"c_id2\":\"20e4b904-300c-4b04-99c3-93a9ac68e048\",\"name\":\"张明剑\",\"mobile\":\"18964982577\",\"headimg\":\"http://filesnew.in-road.com/inroadfiles/demo/attachfiles/20200418/6372280641918849666406635.png\",\"deptid\":\"1\",\"deptname\":null,\"gender\":1,\"functionposttitle\":\"1a007f28-b859-4d86-80ee-9ae4738e5c47\",\"worktype\":null,\"walkietalkie\":null,\"officename\":\"张明剑办公室\",\"joysuchmac\":null,\"xh\":0}]}]},\"isUseCache\":0,\"IsSuccess\":true}";
+            JsonPathRoot jsonPathRoot = new JsonPathRoot("$.data.items");
+            jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation
+            {
+                DestinationJsonColumnCode = "chu_li_ren",
+                DestinationPropertyType = DestinationPropertyTypeEnum.Array,
+                SourceJsonPath = "$.chu_li_ren",
+                ChildRelations = new List<JsonPathMapperRelation> { 
+                    new JsonPathMapperRelation { DestinationJsonColumnCode = "id", SourceJsonPath = "$.c_id" },
+                    new JsonPathMapperRelation { DestinationJsonColumnCode = "name", SourceJsonPath = "$.name" }
+                }
+            });
+
+            jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation
+            {
+                DestinationJsonColumnCode = "zuo_ye_piao_ming_cheng",
+                DestinationPropertyType = DestinationPropertyTypeEnum.Property,
+                SourceJsonPath = "$.zuo_ye_piao_ming_cheng"
+            });
+
+            jsonPathRoot.AddJsonPathMapper(new JsonPathMapperRelation
+            {
+                DestinationJsonColumnCode = "piao_zheng_lei_xing_2",
+                DestinationPropertyType = DestinationPropertyTypeEnum.Array,
+                SourceJsonPath = "$.piao_zheng_lei_xing.value"
+            });
+
+            var result = new ColumnMapperNewObject().MapToCollection(json, jsonPathRoot);
+
+            Assert.NotNull(result);
+        }
     }
 }
